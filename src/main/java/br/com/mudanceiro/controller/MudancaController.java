@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.mudanceiro.controller.dto.MudancaDto;
-import model.Mudanca;
-import model.Usuario;
+import br.com.mudanceiro.model.Mudanca;
+import br.com.mudanceiro.model.Usuario;
 
 @RestController
 public class MudancaController {

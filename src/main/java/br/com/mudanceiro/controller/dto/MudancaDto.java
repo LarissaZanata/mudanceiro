@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import model.Mudanca;
-import model.TipoImovel;
+import br.com.mudanceiro.model.Mudanca;
+import br.com.mudanceiro.model.TipoImovel;
 
 public class MudancaDto {
 
