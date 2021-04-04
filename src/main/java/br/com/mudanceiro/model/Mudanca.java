@@ -3,18 +3,41 @@ package br.com.mudanceiro.model;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;;
+
+@Entity
 public class Mudanca {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private int cepOrigen;
 	private int cepDestino;
+	
+	@ManyToOne  //um cliente pode ter varia mudanças
 	private Usuario cliente;
+	
+	@ManyToOne  //um mudanceiro pode ter varias mudanças
 	private Mudanceiro mudanceiro;
 	private LocalDateTime dataCriacao = LocalDateTime.now();
 	private LocalDateTime dataMudanca;
+	
+	@Enumerated(EnumType.STRING)
 	private TipoImovel imovelOrigem = TipoImovel.CASA;
+	
+	@Enumerated(EnumType.STRING)
 	private TipoImovel imovelDestino = TipoImovel.CASA;
 	private String mobilia;
+	
+	@Enumerated(EnumType.STRING)
 	private StatusMudanca statusMudanca = StatusMudanca.PENDENTE;
+	
 	private BigDecimal valorOrcamento;
 	private byte[] mobiliaImagem;
 	
