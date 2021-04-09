@@ -40,15 +40,7 @@ public class Mudanca {
 	
 	private BigDecimal valorOrcamento;
 	private byte[] mobiliaImagem;
-	
-	public Mudanca() {
-	}
-	
-	public Mudanca(int cepOrigin, int cepDestino, Usuario cliente) {
-		this.cepOrigen = cepOrigin;
-		this.cepDestino = cepDestino;
-		this.cliente = cliente;
-	}
+
 	
 	@Override
 	public int hashCode() {

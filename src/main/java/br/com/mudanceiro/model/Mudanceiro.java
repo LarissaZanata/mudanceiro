@@ -1,6 +1,8 @@
 package br.com.mudanceiro.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,16 +15,8 @@ public class Mudanceiro {
 	private Long id;
 	private String nome;
 	private String telefone;
+	@Enumerated(EnumType.STRING)
 	private TipoServico tipoServico = TipoServico.MUDANCEIRO;
-	
-	public Mudanceiro() {
-	}
-	
-	public Mudanceiro(String nome, String telefone, TipoServico tipoServico) {
-		this.nome = nome;
-		this.telefone = telefone;
-		this.tipoServico = tipoServico;
-	}
 	
 	@Override
 	public int hashCode() {
