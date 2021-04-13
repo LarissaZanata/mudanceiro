@@ -4,7 +4,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.util.Streamable;
+
 import br.com.mudanceiro.model.Mudanca;
+import br.com.mudanceiro.model.Mudanceiro;
+import br.com.mudanceiro.model.StatusMudanca;
 import br.com.mudanceiro.model.TipoImovel;
 
 public class MudancaDto {
@@ -18,6 +23,7 @@ public class MudancaDto {
 	private TipoImovel imovelDestino;
 	private String mobilia;
 	private byte[] mobiliaImagem;
+	private Mudanceiro mudanceiro;
 	
 	public MudancaDto(Mudanca mudanca) {
 		this.id = mudanca.getId();
@@ -29,6 +35,9 @@ public class MudancaDto {
 		this.imovelDestino = mudanca.getImovelDestino();
 		this.mobilia = mudanca.getMobilia();
 		this.mobiliaImagem = mudanca.getMobiliaImagem();
+		if(mudanca.getStatusMudanca() == StatusMudanca.ABERTA) {
+			this.mudanceiro = mudanca.getMudanceiro();
+		}
 	}
 	
 	public Long getId() {
@@ -58,10 +67,10 @@ public class MudancaDto {
 	public byte[] getMobiliaImagem() {
 		return mobiliaImagem;
 	}
-
-	public static List<MudancaDto> converter(List<Mudanca> mudancas) {
-		return mudancas.stream().map(MudancaDto::new).collect(Collectors.toList());
+	public Mudanceiro getMudanceiro() {
+		return mudanceiro;
 	}
-	
-	
+	public static Page<MudancaDto> converter(Page<Mudanca> mudancas) {
+		return (mudancas).map(MudancaDto::new);
+	}
 }

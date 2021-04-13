@@ -40,7 +40,20 @@ public class Mudanca {
 	
 	private BigDecimal valorOrcamento;
 	private byte[] mobiliaImagem;
-
+	
+	public Mudanca() {
+	}
+	
+	public Mudanca(int cepOrigen, int cepDestino, LocalDateTime dataMudanca, TipoImovel imovelOrigem,
+			TipoImovel imovelDestino, String mobilia, byte[] mobiliaImagem) {
+		this.cepOrigen = cepOrigen;
+		this.cepDestino = cepDestino;
+		this.dataMudanca = dataMudanca;
+		this.imovelOrigem = imovelOrigem;
+		this.imovelDestino = imovelDestino;
+		this.mobilia = mobilia;
+		this.mobiliaImagem = mobiliaImagem;
+	}
 	
 	@Override
 	public int hashCode() {
