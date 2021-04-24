@@ -6,13 +6,14 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import br.com.mudanceiro.model.Mudanca;
 import br.com.mudanceiro.model.Mudanceiro;
 import br.com.mudanceiro.model.TipoImovel;
+import br.com.mudanceiro.repository.MudancaRepository;
 
 public class MudancaForm {
-
 	
 	private int cepOrigen;
 
@@ -74,5 +75,16 @@ public class MudancaForm {
 		return new Mudanca(cepOrigen, cepDestino, dataMudanca, imovelOrigem,
 				imovelDestino, mobilia, mobiliaImagem);
 	}
-	
+
+	public Mudanca atualizar(Long id, MudancaRepository mudancaRepository) {
+		Mudanca mudanca = mudancaRepository.getOne(id);
+		mudanca.setCepOrigen(this.cepOrigen);
+		mudanca.setCepDestino(this.cepDestino);
+		mudanca.setDataMudanca(this.dataMudanca);
+		mudanca.setImovelOrigem(this.imovelOrigem);
+		mudanca.setImovelDestino(this.imovelDestino);
+		mudanca.setMobilia(this.mobilia);
+		mudanca.setMobiliaImagem(this.mobiliaImagem);
+		return mudanca;
+	}
 }
