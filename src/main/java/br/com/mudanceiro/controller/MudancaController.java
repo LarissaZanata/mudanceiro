@@ -63,8 +63,8 @@ public class MudancaController {
 	public ResponseEntity<MudancaDto> atualizar(@PathVariable Long id, @RequestBody @Valid MudancaForm form) {
 		Optional<Mudanca> optional = mudancaRepository.findById(id);
 		if(optional.isPresent()) {
-			Mudanca topico = form.atualizar(id, mudancaRepository);
-			return ResponseEntity.ok(new MudancaDto(topico));
+			Mudanca mudanca = form.atualizar(id, mudancaRepository);
+			return ResponseEntity.ok(new MudancaDto(mudanca));
 		}
 		return ResponseEntity.notFound().build();
 	}

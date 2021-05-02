@@ -1,11 +1,14 @@
 package br.com.mudanceiro.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Mudanceiro {
@@ -13,10 +16,13 @@ public class Mudanceiro {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String nome;
 	private String telefone;
 	@Enumerated(EnumType.STRING)
 	private TipoServico tipoServico = TipoServico.MUDANCEIRO;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "usuario_id", referencedColumnName = "id")
+	private Usuario mudanceiro;
 	
 	@Override
 	public int hashCode() {
@@ -34,14 +40,6 @@ public class Mudanceiro {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
 	public String getTelefone() {
 		return telefone;
 	}
@@ -56,5 +54,13 @@ public class Mudanceiro {
 
 	public void setTipoServico(TipoServico tipoServico) {
 		this.tipoServico = tipoServico;
+	}
+
+	public Usuario getMudanceiro() {
+		return mudanceiro;
+	}
+
+	public void setMudanceiro(Usuario mudanceiro) {
+		this.mudanceiro = mudanceiro;
 	}
 }
