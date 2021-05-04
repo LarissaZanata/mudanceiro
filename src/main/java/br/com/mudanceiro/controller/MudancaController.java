@@ -1,6 +1,7 @@
 package br.com.mudanceiro.controller;
 
 import java.net.URI;
+import java.security.cert.PKIXRevocationChecker.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,6 @@ import br.com.mudanceiro.controller.form.MudancaForm;
 import br.com.mudanceiro.model.Mudanca;
 import br.com.mudanceiro.model.StatusMudanca;
 import br.com.mudanceiro.repository.MudancaRepository;
-
 @RestController
 @RequestMapping("/mudancas")
 public class MudancaController {
@@ -64,6 +64,17 @@ public class MudancaController {
 		Optional<Mudanca> optional = mudancaRepository.findById(id);
 		if(optional.isPresent()) {
 			Mudanca mudanca = form.atualizar(id, mudancaRepository);
+			return ResponseEntity.ok(new MudancaDto(mudanca));
+		}
+		return ResponseEntity.notFound().build();
+	}
+	
+	@PutMapping("/status/{id}") //ver depois como passar outro parametro
+	@Transactional
+	public ResponseEntity<MudancaDto> alterarStatusMudanca(@PathVariable Long id, @RequestBody @Valid MudancaForm form){
+		Optional<Mudanca> optional = mudancaRepository.findById(id);
+		if(optional.isPresent()) {
+			Mudanca mudanca = form.atualizarStatus(id, mudancaRepository);
 			return ResponseEntity.ok(new MudancaDto(mudanca));
 		}
 		return ResponseEntity.notFound().build();

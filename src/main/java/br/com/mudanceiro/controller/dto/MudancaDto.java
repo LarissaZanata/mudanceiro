@@ -39,6 +39,7 @@ public class MudancaDto {
 			this.mudanceiro = mudanca.getMudanceiro();
 		}
 	}
+
 	
 	public Long getId() {
 		return id;

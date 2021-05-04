@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import br.com.mudanceiro.model.Mudanca;
 import br.com.mudanceiro.model.Mudanceiro;
+import br.com.mudanceiro.model.StatusMudanca;
 import br.com.mudanceiro.model.TipoImovel;
 import br.com.mudanceiro.repository.MudancaRepository;
 
@@ -28,6 +29,14 @@ public class MudancaForm {
 	private String mobilia;
 	private byte[] mobiliaImagem;
 	
+	private StatusMudanca statusMudanca;
+	
+	public StatusMudanca getStatusMudanca() {
+		return statusMudanca;
+	}
+	public void setStatusMudanca(StatusMudanca statusMudanca) {
+		this.statusMudanca = statusMudanca;
+	}
 	public int getCepOrigen() {
 		return cepOrigen;
 	}
@@ -85,6 +94,12 @@ public class MudancaForm {
 		mudanca.setImovelDestino(this.imovelDestino);
 		mudanca.setMobilia(this.mobilia);
 		mudanca.setMobiliaImagem(this.mobiliaImagem);
+		return mudanca;
+	}
+	
+	public Mudanca atualizarStatus(Long id, MudancaRepository mudancaRepository) {
+		Mudanca mudanca = mudancaRepository.getOne(id);
+		mudanca.setStatusMudanca(this.statusMudanca);
 		return mudanca;
 	}
 }
