@@ -29,54 +29,36 @@ import br.com.mudanceiro.controller.form.MudancaForm;
 import br.com.mudanceiro.model.Mudanca;
 import br.com.mudanceiro.model.StatusMudanca;
 import br.com.mudanceiro.repository.MudancaRepository;
+import br.com.mudanceiro.service.MudancaService;
 @RestController
 @RequestMapping("/mudancas")
 public class MudancaController {
 	
-	@Autowired
-	private MudancaRepository mudancaRepository;
+	private MudancaService mudancaService;
+	
+	public MudancaController(MudancaService mudancaService) {
+		this.mudancaService = mudancaService;
+	}
 
 	@RequestMapping
 	public Page<MudancaDto> lista(@RequestParam(required = false) StatusMudanca statusMudanca, @PageableDefault(sort = "id",
 			direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
-		if(statusMudanca == null) {
-			Page<Mudanca> mudancas = mudancaRepository.findAll(paginacao);
-			return MudancaDto.converter(mudancas);
-		} else {
-			Page<Mudanca> mudancas = mudancaRepository.findByStatusMudanca(statusMudanca, paginacao);
-			return MudancaDto.converter(mudancas);
-		}	
+		
+		return mudancaService.lista(statusMudanca, paginacao);
 	}
 	
 	@PostMapping
-	@Transactional
 	public ResponseEntity<MudancaDto> cadastrar(@RequestBody @Valid MudancaForm form, UriComponentsBuilder uriBuilder) {
-		Mudanca mudanca  = form.novaMudanca();
-		mudancaRepository.save(mudanca);
-		
-		URI uri = uriBuilder.path("/mudancas/{id}").buildAndExpand(mudanca.getId()).toUri();
-		return ResponseEntity.created(uri).body(new MudancaDto(mudanca));
+		return mudancaService.cadastrar(form, uriBuilder);
 	}
 	
 	@PutMapping("/{id}")
-	@Transactional
 	public ResponseEntity<MudancaDto> atualizar(@PathVariable Long id, @RequestBody @Valid MudancaForm form) {
-		Optional<Mudanca> optional = mudancaRepository.findById(id);
-		if(optional.isPresent()) {
-			Mudanca mudanca = form.atualizar(id, mudancaRepository);
-			return ResponseEntity.ok(new MudancaDto(mudanca));
-		}
-		return ResponseEntity.notFound().build();
+		return mudancaService.atualizar(id, form);
 	}
 	
 	@PutMapping("/status/{id}") //ver depois como passar outro parametro
-	@Transactional
 	public ResponseEntity<MudancaDto> alterarStatusMudanca(@PathVariable Long id, @RequestBody @Valid MudancaForm form){
-		Optional<Mudanca> optional = mudancaRepository.findById(id);
-		if(optional.isPresent()) {
-			Mudanca mudanca = form.atualizarStatus(id, mudancaRepository);
-			return ResponseEntity.ok(new MudancaDto(mudanca));
-		}
-		return ResponseEntity.notFound().build();
+		return mudancaService.alterarStatusMudanca(id, form);
 	}
 }
