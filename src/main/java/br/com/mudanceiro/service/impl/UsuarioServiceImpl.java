@@ -1,6 +1,7 @@
 package br.com.mudanceiro.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -35,9 +36,21 @@ public class UsuarioServiceImpl implements UsuarioService{
 
 	@Override
 	public void delete(Long id) { //erro da ide
-		usuarioRepository.findById(id)
-						 .map( usuario -> usuarioRepository.delete(usuario))
-						 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado."));	
+		Optional<Usuario> usuario =  usuarioRepository.findById(id);
+		if(usuario.isPresent()) {
+			try {
+				usuarioRepository.delete(usuario.get());
+			} catch (Exception e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado.");	
+			}
+			
+		}
+		
+		
+	//erro na ide
+	//	usuarioRepository.findById(id)
+	//					 .map( usuario -> usuarioRepository.delete(usuario))
+	//					 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado."));	
 		
 	}
 

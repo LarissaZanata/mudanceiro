@@ -37,8 +37,9 @@ public class UsuarioController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Usuario save(@RequestBody Usuario usuario) {
-		return usuarioService.save(usuario);
+	public UsuarioDTO save(@RequestBody Usuario usuario) {
+		Usuario usuarioSalvo = usuarioService.save(usuario);
+		return UsuarioDTO.converte(usuarioSalvo);
 	}
 	
 	@DeleteMapping("{id}")
@@ -55,6 +56,6 @@ public class UsuarioController {
 	
 	@GetMapping
 	public List<Usuario> find(Usuario filtro){
-		return usuarioService.find(filtro);
+		return usuarioService.find(filtro); //fazer retornar um DTO
 	}
 }
