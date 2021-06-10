@@ -16,13 +16,13 @@ public class Mudanceiro {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String telefone;
+	
 	@Enumerated(EnumType.STRING)
 	private TipoServico tipoServico = TipoServico.MUDANCEIRO;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "usuario_id", referencedColumnName = "id")
-	private Usuario mudanceiro;
+	private Usuario usuario;
 	
 	@Override
 	public int hashCode() {
@@ -40,14 +40,6 @@ public class Mudanceiro {
 		this.id = id;
 	}
 
-	public String getTelefone() {
-		return telefone;
-	}
-
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
-
 	public TipoServico getTipoServico() {
 		return tipoServico;
 	}
@@ -56,11 +48,11 @@ public class Mudanceiro {
 		this.tipoServico = tipoServico;
 	}
 
-	public Usuario getMudanceiro() {
-		return mudanceiro;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setMudanceiro(Usuario mudanceiro) {
-		this.mudanceiro = mudanceiro;
+	public void setUsuario(Usuario mudanceiro) {
+		this.usuario = mudanceiro;
 	}
 }

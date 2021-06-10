@@ -7,13 +7,16 @@ public class UsuarioDTO {
 	private Long id;
 	private String nome;
 	private String email;
+	private String telefone;
 	
-	public UsuarioDTO(Long id, String nome, String email) {
+	public UsuarioDTO(Long id, String nome, String email, String telefone) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
+		this.telefone = telefone;
 	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -33,8 +36,16 @@ public class UsuarioDTO {
 		this.email = email;
 	}
 	
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
 	public static UsuarioDTO converte(Usuario usuario) {
-		UsuarioDTO usuarioDto = new UsuarioDTO(usuario.getId(), usuario.getNome(), usuario.getEmail());
+		UsuarioDTO usuarioDto = new UsuarioDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getTelefone());
 		return usuarioDto;
 	}
 }

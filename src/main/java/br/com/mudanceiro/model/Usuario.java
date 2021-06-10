@@ -14,6 +14,7 @@ public class Usuario {
 	private String nome;
 	private String email;
 	private String senha;
+	private String telefone;
 	
 	@Override
 	public int hashCode() {
@@ -71,5 +72,13 @@ public class Usuario {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+	
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 }
