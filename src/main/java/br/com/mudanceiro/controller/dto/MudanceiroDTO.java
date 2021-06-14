@@ -1,5 +1,14 @@
 package br.com.mudanceiro.controller.dto;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+import org.hibernate.transform.ToListResultTransformer;
+import org.springframework.util.CollectionUtils;
+
 import br.com.mudanceiro.model.Mudanceiro;
 import br.com.mudanceiro.model.TipoServico;
 
@@ -46,6 +55,25 @@ public class MudanceiroDTO {
 														usuarioMudanceiro);
 		return mudanceiroDTO;
 	}
+	
+	public static List<MudanceiroDTO> convertAll(List<Mudanceiro> mudanceiros){
+		/*List<MudanceiroDTO> allMudanceiros = new ArrayList<MudanceiroDTO>();
+		
+		for (Mudanceiro mudanceiro : mudanceiros) {
+			allMudanceiros.add(converte(mudanceiro));
+		}
+		
+		return allMudanceiros;*/
+		if(CollectionUtils.isEmpty(mudanceiros)) {
+			return Collections.emptyList();
+		}
+		
+		List<MudanceiroDTO> allMudanceiros = mudanceiros.stream()
+														.map(m -> MudanceiroDTO.converte(m))
+														.collect(Collectors.toList());
+		return allMudanceiros;
+	}
+
 	
 	
 	

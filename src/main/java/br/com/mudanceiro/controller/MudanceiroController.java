@@ -37,6 +37,13 @@ public class MudanceiroController {
 		return MudanceiroDTO.converte(mudanceiro);
 	}
 	
+	@GetMapping
+	public List<MudanceiroDTO> getAllUsuarioById() {
+		List<Mudanceiro> mudanceiros = mudanceiroService.getAllMudanceiro();
+		
+		return MudanceiroDTO.convertAll(mudanceiros);
+	}
+	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public MudanceiroDTO save(@RequestBody @Valid  MudanceiroForm mudanceiroForm) {
@@ -57,8 +64,4 @@ public class MudanceiroController {
 		mudanceiroService.update(id, mudanceiro);
 	}
 	
-	@GetMapping
-	public List<Mudanceiro> find(Mudanceiro filtro){
-		return mudanceiroService.find(filtro); //fazer retornar um DTO
-	}
 }

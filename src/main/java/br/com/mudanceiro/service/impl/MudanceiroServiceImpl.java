@@ -3,10 +3,9 @@ package br.com.mudanceiro.service.impl;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.com.mudanceiro.repository.MudanceiroRepository;
@@ -36,6 +35,7 @@ public class MudanceiroServiceImpl implements MudanceiroService{
 	}
 	
 	@Override
+	@Transactional
 	public Mudanceiro save(MudanceiroForm form) {
 		Usuario usuario = usuarioRepository
 											.findById(form.getIdUsuario())
@@ -49,6 +49,7 @@ public class MudanceiroServiceImpl implements MudanceiroService{
 	
 	
 	@Override
+	@Transactional
 	public void delete(Long id) { 
 		Optional<Mudanceiro> usuario =  mudanceiroRepository.findById(id);
 		if(usuario.isPresent()) {
@@ -61,7 +62,7 @@ public class MudanceiroServiceImpl implements MudanceiroService{
 		}	
 	}
 	
-	
+	@Transactional
 	public void update(Long id, MudanceiroForm mudanceiroForm) {
 		
 		Optional<Usuario> usuario  = usuarioRepository.findById(mudanceiroForm.getIdUsuario());
@@ -83,16 +84,11 @@ public class MudanceiroServiceImpl implements MudanceiroService{
 							return mudanceiroExistente;
 						}).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Mudanceiro não encontrado para o id " + id));
 	}
-
-	@Override
-	public List<Mudanceiro> find(Mudanceiro filtro) {//não funcionou
-		ExampleMatcher matcher = ExampleMatcher
-				.matching()
-				.withIgnoreCase()
-				.withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
-
-		Example example = Example.of(filtro, matcher);
-		return mudanceiroRepository.findAll(example);
+	
+	public List<Mudanceiro> getAllMudanceiro(){
+		
+		List<Mudanceiro> mudanceiros = mudanceiroRepository.findAll();
+		return mudanceiros;
 	}
 	
 }

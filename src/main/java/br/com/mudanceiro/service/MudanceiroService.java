@@ -11,6 +11,6 @@ public interface MudanceiroService {
 	public Mudanceiro save(MudanceiroForm form);
 	public void delete(Long id);
 	public void update(Long id, MudanceiroForm mudanceiroForm);
-	public List<Mudanceiro> find(Mudanceiro filtro);
+	public List<Mudanceiro> getAllMudanceiro();
 
 }
