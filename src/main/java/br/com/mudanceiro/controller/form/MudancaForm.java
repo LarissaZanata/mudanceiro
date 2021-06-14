@@ -14,7 +14,21 @@ import br.com.mudanceiro.model.StatusMudanca;
 import br.com.mudanceiro.model.TipoImovel;
 import br.com.mudanceiro.repository.MudancaRepository;
 
+/*
+ * {
+    "usuario": 1,
+    "cepOrigen": 87030079,
+    "cepDestino": 87030071,
+    "dataMudanca": "2019-05-05T18:00:00",
+    "imovelOrigem": "APARTAMENTO",
+    "imovelDestino": "CASA",
+    "mobilia": "mesa",
+    "mobiliaImagem": null
+}*/
+
 public class MudancaForm {
+	
+	private Long usuario;
 	
 	private int cepOrigen;
 
@@ -29,13 +43,13 @@ public class MudancaForm {
 	private String mobilia;
 	private byte[] mobiliaImagem;
 	
-	private StatusMudanca statusMudanca;
 	
-	public StatusMudanca getStatusMudanca() {
-		return statusMudanca;
+	
+	public Long getUsuario() {
+		return usuario;
 	}
-	public void setStatusMudanca(StatusMudanca statusMudanca) {
-		this.statusMudanca = statusMudanca;
+	public void setUsuario(Long usuario) {
+		this.usuario = usuario;
 	}
 	public int getCepOrigen() {
 		return cepOrigen;
@@ -79,27 +93,5 @@ public class MudancaForm {
 	public void setMobiliaImagem(byte[] mobiliaImagem) {
 		this.mobiliaImagem = mobiliaImagem;
 	}
-	
-	public Mudanca novaMudanca() {
-		return new Mudanca(cepOrigen, cepDestino, dataMudanca, imovelOrigem,
-				imovelDestino, mobilia, mobiliaImagem);
-	}
 
-	public Mudanca atualizar(Long id, MudancaRepository mudancaRepository) {
-		Mudanca mudanca = mudancaRepository.getOne(id);
-		mudanca.setCepOrigen(this.cepOrigen);
-		mudanca.setCepDestino(this.cepDestino);
-		mudanca.setDataMudanca(this.dataMudanca);
-		mudanca.setImovelOrigem(this.imovelOrigem);
-		mudanca.setImovelDestino(this.imovelDestino);
-		mudanca.setMobilia(this.mobilia);
-		mudanca.setMobiliaImagem(this.mobiliaImagem);
-		return mudanca;
-	}
-	
-	public Mudanca atualizarStatus(Long id, MudancaRepository mudancaRepository) {
-		Mudanca mudanca = mudancaRepository.getOne(id);
-		mudanca.setStatusMudanca(this.statusMudanca);
-		return mudanca;
-	}
 }

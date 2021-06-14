@@ -144,10 +144,6 @@ public class Mudanca {
 		this.imovelOrigem = imovelOrigem;
 	}
 
-	public TipoImovel getImovelDEstino() {
-		return imovelDestino;
-	}
-
 	public void setImovelDEstino(TipoImovel imovelDestino) {
 		this.imovelDestino = imovelDestino;
 	}
@@ -178,10 +174,6 @@ public class Mudanca {
 
 	public TipoImovel getImovelDestino() {
 		return imovelDestino;
-	}
-
-	public void setImovelDestino(TipoImovel imovelDestino) {
-		this.imovelDestino = imovelDestino;
 	}
 
 	public BigDecimal getValorOrcamento() {

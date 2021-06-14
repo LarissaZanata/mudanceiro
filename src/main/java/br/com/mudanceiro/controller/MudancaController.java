@@ -1,35 +1,20 @@
 package br.com.mudanceiro.controller;
 
-import java.net.URI;
-import java.security.cert.PKIXRevocationChecker.Option;
-import java.util.List;
-import java.util.Optional;
 
-import javax.transaction.Transactional;
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.mudanceiro.controller.dto.MudancaDto;
+import br.com.mudanceiro.controller.dto.InformacoesMudancaDTO;
 import br.com.mudanceiro.controller.form.MudancaForm;
 import br.com.mudanceiro.model.Mudanca;
-import br.com.mudanceiro.model.StatusMudanca;
-import br.com.mudanceiro.repository.MudancaRepository;
 import br.com.mudanceiro.service.MudancaService;
+
 @RestController
 @RequestMapping("/mudancas")
 public class MudancaController {
@@ -39,26 +24,17 @@ public class MudancaController {
 	public MudancaController(MudancaService mudancaService) {
 		this.mudancaService = mudancaService;
 	}
-
-	@RequestMapping
-	public Page<MudancaDto> lista(@RequestParam(required = false) StatusMudanca statusMudanca, @PageableDefault(sort = "id",
-			direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
-		
-		return mudancaService.lista(statusMudanca, paginacao);
-	}
 	
 	@PostMapping
-	public ResponseEntity<MudancaDto> cadastrar(@RequestBody @Valid MudancaForm form, UriComponentsBuilder uriBuilder) {
-		return mudancaService.cadastrar(form, uriBuilder);
+	@ResponseStatus(HttpStatus.CREATED)
+	public Long save(@RequestBody MudancaForm form) {
+		Mudanca mudanca = mudancaService.salvar(form);
+		return mudanca.getId();
 	}
 	
-	@PutMapping("/{id}")
-	public ResponseEntity<MudancaDto> atualizar(@PathVariable Long id, @RequestBody @Valid MudancaForm form) {
-		return mudancaService.atualizar(id, form);
-	}
-	
-	@PutMapping("/status/{id}") //ver depois como passar outro parametro
-	public ResponseEntity<MudancaDto> alterarStatusMudanca(@PathVariable Long id, @RequestBody @Valid MudancaForm form){
-		return mudancaService.alterarStatusMudanca(id, form);
+	@GetMapping("{id}")
+	public InformacoesMudancaDTO getMudanca(@PathVariable Long id) {
+		Mudanca mudanca = mudancaService.obterMudancaCompleta(id);
+		return InformacoesMudancaDTO.converte(mudanca);					
 	}
 }

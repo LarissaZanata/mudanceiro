@@ -11,6 +11,4 @@ import br.com.mudanceiro.model.StatusMudanca;
 
 public interface MudancaRepository extends JpaRepository<Mudanca, Long>{
 
-	Page<Mudanca> findByStatusMudanca(StatusMudanca status, Pageable paginacao);
-
 }

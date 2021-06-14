@@ -17,6 +17,10 @@ public class MudanceiroDTO {
 	private TipoServico tipoServico;
 	private UsuarioDTO usuario;
 	
+	public MudanceiroDTO() {
+		
+	}
+	
 	public MudanceiroDTO(Long id, TipoServico tipoServico, UsuarioDTO usuario) {
 		super();
 		this.id = id;
@@ -57,13 +61,6 @@ public class MudanceiroDTO {
 	}
 	
 	public static List<MudanceiroDTO> convertAll(List<Mudanceiro> mudanceiros){
-		/*List<MudanceiroDTO> allMudanceiros = new ArrayList<MudanceiroDTO>();
-		
-		for (Mudanceiro mudanceiro : mudanceiros) {
-			allMudanceiros.add(converte(mudanceiro));
-		}
-		
-		return allMudanceiros;*/
 		if(CollectionUtils.isEmpty(mudanceiros)) {
 			return Collections.emptyList();
 		}
@@ -73,8 +70,4 @@ public class MudanceiroDTO {
 														.collect(Collectors.toList());
 		return allMudanceiros;
 	}
-
-	
-	
-	
 }
