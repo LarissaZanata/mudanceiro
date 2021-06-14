@@ -125,7 +125,6 @@ public class InformacoesMudancaDTO {
 			mudanceiroDTO = MudanceiroDTO.converte(mudanca.getMudanceiro());
 		}
 		
-		
 		InformacoesMudancaDTO mudancaDTO = new InformacoesMudancaDTO();
 		mudancaDTO.setId(mudanca.getId());
 		mudancaDTO.setCliente(clienteDTO);
