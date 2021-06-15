@@ -2,27 +2,23 @@ package br.com.mudanceiro.service.impl;
 
 
 import java.math.BigDecimal;
-import java.text.Normalizer.Form;
-import java.time.LocalDateTime;
-import java.util.Optional;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import br.com.mudanceiro.repository.MudancaRepository;
 import br.com.mudanceiro.repository.MudanceiroRepository;
 import br.com.mudanceiro.repository.UsuarioRepository;
 import br.com.mudanceiro.service.MudancaService;
+import br.com.mudanceiro.controller.form.AtualizaStatusMudancaPorMudanceiroForm;
 import br.com.mudanceiro.controller.form.MudancaForm;
 import br.com.mudanceiro.exception.RegraNegocioException;
 import br.com.mudanceiro.model.Mudanca;
 import br.com.mudanceiro.model.Mudanceiro;
 import br.com.mudanceiro.model.StatusMudanca;
-import br.com.mudanceiro.model.TipoImovel;
 import br.com.mudanceiro.model.Usuario;
 
 @Service
@@ -53,9 +49,11 @@ public class MudancaServiceImpl implements MudancaService{
 		mudanca.setCliente(cliente);
 		mudanca.setDataMudanca(form.getDataMudanca());
 		mudanca.setImovelOrigem(form.getImovelOrigem());
-		mudanca.setImovelDEstino(form.getImovelDestino());
+		mudanca.setImovelDestino(form.getImovelDestino());
 		mudanca.setMobilia(form.getMobilia());
 		mudanca.setMobiliaImagem(form.getMobiliaImagem());
+		mudanca.setStatusMudanca(StatusMudanca.PENDENTE);
+		mudanca.setValorOrcamento(BigDecimal.valueOf(0));
 		
 		return mudancaRepository.save(mudanca);
 	}
@@ -66,7 +64,28 @@ public class MudancaServiceImpl implements MudancaService{
 				.orElseThrow(() -> new RegraNegocioException("Código de mudanca inválido."));
 	}
 
+	@Override
+	@Transactional
+	public void atualizaOrcamento(Long id, AtualizaStatusMudancaPorMudanceiroForm form) {	
+		Mudanca mudanca = new Mudanca();
+		mudanca.setValorOrcamento(form.getValorOrcamento());
 
-
+		mudancaRepository.findById(id)
+							.map(mudancaExistente -> {
+								mudanca.setMudanceiro(populaMudanceiro(mudancaExistente.getCliente()));			
+								mudanca.setId(mudancaExistente.getId());
+								mudancaRepository.save(mudanca);
+								return mudancaExistente;	
+							}).orElseThrow(() -> 
+							new ResponseStatusException(HttpStatus.NOT_FOUND, "Mudanca não encontrada para o id " + id));
+		
+	}
 	
+	private Mudanceiro populaMudanceiro(Usuario usuarioMudanca) {
+		return mudanceiroRepository.findByUsuario(usuarioMudanca)
+							.map(mudanceiroExistente -> {
+								return mudanceiroExistente;
+							}).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, 
+					"Mudanceiro não encontrado para usuario com o id " + usuarioMudanca.getId()));
+	}
 }

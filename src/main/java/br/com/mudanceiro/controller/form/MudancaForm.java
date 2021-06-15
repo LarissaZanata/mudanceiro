@@ -14,18 +14,6 @@ import br.com.mudanceiro.model.StatusMudanca;
 import br.com.mudanceiro.model.TipoImovel;
 import br.com.mudanceiro.repository.MudancaRepository;
 
-/*
- * {
-    "usuario": 1,
-    "cepOrigen": 87030079,
-    "cepDestino": 87030071,
-    "dataMudanca": "2019-05-05T18:00:00",
-    "imovelOrigem": "APARTAMENTO",
-    "imovelDestino": "CASA",
-    "mobilia": "mesa",
-    "mobiliaImagem": null
-}*/
-
 public class MudancaForm {
 	
 	private Long usuario;

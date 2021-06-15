@@ -36,7 +36,7 @@ public class Mudanca {
 	private String mobilia;
 	
 	@Enumerated(EnumType.STRING)
-	private StatusMudanca statusMudanca = StatusMudanca.PENDENTE;
+	private StatusMudanca statusMudanca;
 	
 	private BigDecimal valorOrcamento;
 	private byte[] mobiliaImagem;
@@ -144,7 +144,7 @@ public class Mudanca {
 		this.imovelOrigem = imovelOrigem;
 	}
 
-	public void setImovelDEstino(TipoImovel imovelDestino) {
+	public void setImovelDestino(TipoImovel imovelDestino) {
 		this.imovelDestino = imovelDestino;
 	}
 

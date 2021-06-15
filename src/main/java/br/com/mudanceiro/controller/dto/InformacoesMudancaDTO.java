@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import br.com.mudanceiro.model.Mudanca;
 import br.com.mudanceiro.model.TipoImovel;
+import br.com.mudanceiro.model.StatusMudanca;
 
 public class InformacoesMudancaDTO {
 
@@ -16,6 +17,7 @@ public class InformacoesMudancaDTO {
 	private TipoImovel imovelDestino;
 	private String mobilia;
 	private BigDecimal valorOrcamento;
+	private StatusMudanca statusMudanca;
 	private byte[] mobiliaImagem;
 	
 	public InformacoesMudancaDTO() {
@@ -24,7 +26,7 @@ public class InformacoesMudancaDTO {
 	
 	public InformacoesMudancaDTO(Long id, UsuarioDTO cliente, MudanceiroDTO mudanceiro, int cepOrigem,
 			int cepDestino, TipoImovel imovelOrigem, TipoImovel imovelDestino, String mobilia,
-			BigDecimal valorOrcamento, byte[] mobiliaImagem) {
+			BigDecimal valorOrcamento, byte[] mobiliaImagem, StatusMudanca statusMudanca) {
 		super();
 		this.id = id;
 		this.cliente = cliente;
@@ -36,6 +38,7 @@ public class InformacoesMudancaDTO {
 		this.mobilia = mobilia;
 		this.valorOrcamento = valorOrcamento;
 		this.mobiliaImagem = mobiliaImagem;
+		this.statusMudanca = statusMudanca;
 	}
 
 	public Long getId() {
@@ -118,17 +121,30 @@ public class InformacoesMudancaDTO {
 		this.mobiliaImagem = mobiliaImagem;
 	}
 
+	
+	
+	public StatusMudanca getStatusMudanca() {
+		return statusMudanca;
+	}
+
+	public void setStatusMudanca(StatusMudanca statusMudanca) {
+		this.statusMudanca = statusMudanca;
+	}
+
 	public static InformacoesMudancaDTO converte(Mudanca mudanca) {
 		UsuarioDTO clienteDTO = UsuarioDTO.converte(mudanca.getCliente());
 		MudanceiroDTO mudanceiroDTO = new MudanceiroDTO();
-		if(mudanca.getMudanceiro() != null) {
-			mudanceiroDTO = MudanceiroDTO.converte(mudanca.getMudanceiro());
-		}
+
 		
 		InformacoesMudancaDTO mudancaDTO = new InformacoesMudancaDTO();
 		mudancaDTO.setId(mudanca.getId());
 		mudancaDTO.setCliente(clienteDTO);
-		mudancaDTO.setMudanceiro(mudanceiroDTO);
+		
+		if(mudanca.getMudanceiro() != null) {
+			mudanceiroDTO = MudanceiroDTO.converte(mudanca.getMudanceiro());
+			mudancaDTO.setMudanceiro(mudanceiroDTO);
+		}
+		
 		mudancaDTO.setCepOrigem(mudanca.getCepOrigen());
 		mudancaDTO.setCepDestino(mudanca.getCepDestino());
 		mudancaDTO.setImovelOrigem(mudanca.getImovelOrigem());
@@ -136,6 +152,7 @@ public class InformacoesMudancaDTO {
 		mudancaDTO.setMobilia(mudanca.getMobilia());
 		mudancaDTO.setValorOrcamento(mudanca.getValorOrcamento());
 		mudancaDTO.setMobiliaImagem(mudanca.getMobiliaImagem());
+		mudancaDTO.setStatusMudanca(mudanca.getStatusMudanca());
 		
 		return mudancaDTO;
 	}
