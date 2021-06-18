@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.mudanceiro.controller.dto.InformacoesMudancaDTO;
-import br.com.mudanceiro.controller.form.AtualizaStatusMudancaPorMudanceiroForm;
+import br.com.mudanceiro.controller.form.AtualizaOrcamentoMudancaPorMudanceiroForm;
+import br.com.mudanceiro.controller.form.AtualizaStatusMudancaPorClienteForm;
 import br.com.mudanceiro.controller.form.MudancaForm;
 import br.com.mudanceiro.model.Mudanca;
 import br.com.mudanceiro.service.MudancaService;
@@ -41,8 +42,12 @@ public class MudancaController {
 	}
 	
 	@PutMapping("{idMudanca}")
-	public void InformarOrcamento(@PathVariable Long idMudanca, @RequestBody AtualizaStatusMudancaPorMudanceiroForm form) {
+	public void InformarOrcamento(@PathVariable Long idMudanca, @RequestBody AtualizaOrcamentoMudancaPorMudanceiroForm form) {
 		mudancaService.atualizaOrcamento(idMudanca, form);
 	}
 	
+	@PutMapping("{idMudanca}")
+	public void AtualizarStatus(@PathVariable Long id, @RequestBody AtualizaStatusMudancaPorClienteForm form) {
+		mudancaService.atualizaStatusMudanca(id, form);
+	}
 }

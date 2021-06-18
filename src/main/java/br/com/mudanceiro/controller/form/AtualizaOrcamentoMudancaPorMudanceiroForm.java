@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import br.com.mudanceiro.model.StatusMudanca;
 
-public class AtualizaStatusMudancaPorMudanceiroForm {
+public class AtualizaOrcamentoMudancaPorMudanceiroForm {
 
 	private BigDecimal valorOrcamento;
 

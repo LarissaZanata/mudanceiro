@@ -2,7 +2,7 @@ package br.com.mudanceiro.service.impl;
 
 
 import java.math.BigDecimal;
-
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,8 @@ import br.com.mudanceiro.repository.MudancaRepository;
 import br.com.mudanceiro.repository.MudanceiroRepository;
 import br.com.mudanceiro.repository.UsuarioRepository;
 import br.com.mudanceiro.service.MudancaService;
-import br.com.mudanceiro.controller.form.AtualizaStatusMudancaPorMudanceiroForm;
+import br.com.mudanceiro.controller.form.AtualizaOrcamentoMudancaPorMudanceiroForm;
+import br.com.mudanceiro.controller.form.AtualizaStatusMudancaPorClienteForm;
 import br.com.mudanceiro.controller.form.MudancaForm;
 import br.com.mudanceiro.exception.RegraNegocioException;
 import br.com.mudanceiro.model.Mudanca;
@@ -66,7 +67,7 @@ public class MudancaServiceImpl implements MudancaService{
 
 	@Override
 	@Transactional
-	public void atualizaOrcamento(Long id, AtualizaStatusMudancaPorMudanceiroForm form) {	
+	public void atualizaOrcamento(Long id, AtualizaOrcamentoMudancaPorMudanceiroForm form) {	
 		Mudanca mudanca = new Mudanca();
 		mudanca.setValorOrcamento(form.getValorOrcamento());
 
@@ -88,4 +89,29 @@ public class MudancaServiceImpl implements MudancaService{
 							}).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, 
 					"Mudanceiro não encontrado para usuario com o id " + usuarioMudanca.getId()));
 	}
+	
+	@Override
+	@Transactional
+	public void atualizaStatusMudanca(Long id, AtualizaStatusMudancaPorClienteForm form) {
+		Mudanca mudanca = new Mudanca();
+		mudanca.setStatusMudanca(form.getStatusMudanca());
+		
+		mudancaRepository.findById(id)
+						.map(mudancaExistente -> {
+							mudanca.setId(mudancaExistente.getId());
+							mudancaRepository.save(mudanca);
+							return mudancaExistente;
+						}).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, 
+								"Mudanca não encontada para o id " + id));
+	}
+
+	@Override
+	public List<Mudanca> buscaMudancasPendentes() {
+		
+		return null;
+	}
+	
+	
+	//fazer um pra all mudancas por id mudanceiro
+	
 }
