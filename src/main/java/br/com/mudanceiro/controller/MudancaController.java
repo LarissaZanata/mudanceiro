@@ -1,6 +1,8 @@
 package br.com.mudanceiro.controller;
 
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.mudanceiro.controller.dto.InformacoesMudancaDTO;
+import br.com.mudanceiro.controller.dto.MudancaDTO;
 import br.com.mudanceiro.controller.form.AtualizaOrcamentoMudancaPorMudanceiroForm;
 import br.com.mudanceiro.controller.form.AtualizaStatusMudancaPorClienteForm;
 import br.com.mudanceiro.controller.form.MudancaForm;
@@ -41,13 +44,23 @@ public class MudancaController {
 		return InformacoesMudancaDTO.converte(mudanca);					
 	}
 	
-	@PutMapping("{idMudanca}")
+	//arrumar
+	@PutMapping("/orcamento/{idMudanca}")
 	public void InformarOrcamento(@PathVariable Long idMudanca, @RequestBody AtualizaOrcamentoMudancaPorMudanceiroForm form) {
 		mudancaService.atualizaOrcamento(idMudanca, form);
 	}
 	
-	@PutMapping("{idMudanca}")
-	public void AtualizarStatus(@PathVariable Long id, @RequestBody AtualizaStatusMudancaPorClienteForm form) {
-		mudancaService.atualizaStatusMudanca(id, form);
+	//arrumar
+	@PutMapping("/status/{idMudanca}") //pra caso o cliente queira cancelar
+	public void AtualizarStatus(@PathVariable Long idMudanca, @RequestBody AtualizaStatusMudancaPorClienteForm form) {
+		mudancaService.atualizaStatusMudanca(idMudanca, form);
 	}
+	
+	@GetMapping("/pendentes")
+	public List<MudancaDTO> listaMudancasPendentes(){
+		List<Mudanca> mudancasPendentes = mudancaService.buscaMudancasPendentes();
+		return MudancaDTO.convertAll(mudancasPendentes);
+	}
+	
+	//construir um pra buscar mudancas por ids de mudanceiros
 }

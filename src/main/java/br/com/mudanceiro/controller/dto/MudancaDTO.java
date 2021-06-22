@@ -14,7 +14,7 @@ import br.com.mudanceiro.model.TipoImovel;
 
 public class MudancaDTO {
 	
-	private UsuarioDTO cliente;
+	private DadosUsuarioParaMudanceiroDTO cliente;
 	private int cepOrigem;
 	private int cepDestino;
 	private TipoImovel imovelOrigem;
@@ -27,7 +27,7 @@ public class MudancaDTO {
 		
 	}
 	
-	public MudancaDTO(UsuarioDTO cliente, int cepOrigem, int cepDestino, TipoImovel imovelOrigem,
+	public MudancaDTO(DadosUsuarioParaMudanceiroDTO cliente, int cepOrigem, int cepDestino, TipoImovel imovelOrigem,
 			TipoImovel imovelDestino, String mobilia, StatusMudanca statusMudanca, byte[] mobiliaImagem) {
 		super();
 		this.cliente = cliente;
@@ -40,11 +40,11 @@ public class MudancaDTO {
 		this.mobiliaImagem = mobiliaImagem;
 	}
 
-	public UsuarioDTO getCliente() {
+	public DadosUsuarioParaMudanceiroDTO getCliente() {
 		return cliente;
 	}
 
-	public void setCliente(UsuarioDTO cliente) {
+	public void setCliente(DadosUsuarioParaMudanceiroDTO cliente) {
 		this.cliente = cliente;
 	}
 
@@ -105,7 +105,7 @@ public class MudancaDTO {
 	}
 	
 	public static MudancaDTO converte(Mudanca mudanca) {
-		UsuarioDTO cliente = UsuarioDTO.converte(mudanca.getCliente());
+		DadosUsuarioParaMudanceiroDTO cliente = DadosUsuarioParaMudanceiroDTO.converte(mudanca.getCliente());
 		MudancaDTO mudancaDTO = new MudancaDTO();
 		mudancaDTO.setCliente(cliente);
 		mudancaDTO.setCepOrigem(mudanca.getCepOrigen());
@@ -119,14 +119,14 @@ public class MudancaDTO {
 		
 	}
 	
-	public List<MudancaDTO> convertAll(List<Mudanca> mudancas){
+	public static List<MudancaDTO> convertAll(List<Mudanca> mudancas){
 		if(CollectionUtils.isEmpty(mudancas)) {
 			return Collections.emptyList();
 		}
 		
 		List<MudancaDTO> allMudancas = mudancas.stream()
-														.map(m -> MudancaDTO.converte(m))
-														.collect(Collectors.toList());
+													.map(m -> MudancaDTO.converte(m))
+													.collect(Collectors.toList());
 		return allMudancas;
 	}
 }

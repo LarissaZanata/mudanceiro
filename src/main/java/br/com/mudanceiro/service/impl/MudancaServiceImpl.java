@@ -2,7 +2,9 @@ package br.com.mudanceiro.service.impl;
 
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -108,7 +110,13 @@ public class MudancaServiceImpl implements MudancaService{
 	@Override
 	public List<Mudanca> buscaMudancasPendentes() {
 		
-		return null;
+		Optional<List<Mudanca>> mudancasPendentes = mudancaRepository.findAllPendentes();
+		
+		if(mudancasPendentes.isPresent()) {
+			return mudancasPendentes.get();
+		}else {
+			return Collections.emptyList();
+		}
 	}
 	
 	
