@@ -3,6 +3,8 @@ package br.com.mudanceiro.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +39,7 @@ public class UsuarioController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public UsuarioDTO save(@RequestBody Usuario usuario) {
+	public UsuarioDTO save(@RequestBody @Valid Usuario usuario) {
 		Usuario usuarioSalvo = usuarioService.save(usuario);
 		return UsuarioDTO.converte(usuarioSalvo);
 	}

@@ -15,6 +15,9 @@ public class ApiErrors {
 		return errors;
 	}
 	
+	public ApiErrors(List<String> errors) {
+		this.errors = errors;
+	}
 	
 }
 

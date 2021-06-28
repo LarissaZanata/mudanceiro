@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 public class Usuario {
@@ -11,9 +12,17 @@ public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotEmpty(message = "{campo.nome.obrigatorio}")
 	private String nome;
+	
+	@NotEmpty(message = "{campo.email.obrigatorio}")
 	private String email;
+	
+	@NotEmpty(message = "{campo.senha.obrigatorio}")
 	private String senha;
+	
+	@NotEmpty(message = "{campo.telefone.obrigatorio}")
 	private String telefone;
 	
 	@Override

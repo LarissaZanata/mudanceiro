@@ -12,6 +12,8 @@ import br.com.mudanceiro.repository.MudanceiroRepository;
 import br.com.mudanceiro.repository.UsuarioRepository;
 import br.com.mudanceiro.service.MudanceiroService;
 import br.com.mudanceiro.controller.form.MudanceiroForm;
+import br.com.mudanceiro.exception.MudanceiroNaoEncontradoException;
+import br.com.mudanceiro.exception.UsuarioNaoEncontradoException;
 import br.com.mudanceiro.model.Mudanceiro;
 import br.com.mudanceiro.model.Usuario;
 
@@ -31,7 +33,7 @@ public class MudanceiroServiceImpl implements MudanceiroService{
 	public Mudanceiro getMudanceiroById(Long id) {
 		return mudanceiroRepository
 				.findById(id)
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Mudanceiro não encontrado."));
+				.orElseThrow(() -> new MudanceiroNaoEncontradoException());
 	}
 	
 	@Override
@@ -39,7 +41,7 @@ public class MudanceiroServiceImpl implements MudanceiroService{
 	public Mudanceiro save(MudanceiroForm form) {
 		Usuario usuario = usuarioRepository
 											.findById(form.getIdUsuario())
-											.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não existe um usuário para o id " + form.getIdUsuario()));
+											.orElseThrow(() -> new UsuarioNaoEncontradoException(form.getIdUsuario()));
 		Mudanceiro mudanceiro = new Mudanceiro();
 		mudanceiro.setTipoServico(form.getTipoServico());
 		mudanceiro.setUsuario(usuario);
@@ -56,7 +58,7 @@ public class MudanceiroServiceImpl implements MudanceiroService{
 			try {
 				mudanceiroRepository.delete(usuario.get());
 			} catch (Exception e) {
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Mudanceiro não encontrado.");	
+				throw new MudanceiroNaoEncontradoException();	
 			}
 			
 		}	
@@ -73,7 +75,7 @@ public class MudanceiroServiceImpl implements MudanceiroService{
 		if(usuario.isPresent()){
 			mudanceiro.setUsuario(usuario.get());
 		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado");
+			throw new UsuarioNaoEncontradoException(mudanceiroForm.getIdUsuario());
 		}
 		
 		mudanceiroRepository
@@ -82,7 +84,7 @@ public class MudanceiroServiceImpl implements MudanceiroService{
 							mudanceiro.setId(mudanceiroExistente.getId());
 							mudanceiroRepository.save(mudanceiro);
 							return mudanceiroExistente;
-						}).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Mudanceiro não encontrado para o id " + id));
+						}).orElseThrow(() -> new MudanceiroNaoEncontradoException(id));
 	}
 	
 	public List<Mudanceiro> getAllMudanceiro(){

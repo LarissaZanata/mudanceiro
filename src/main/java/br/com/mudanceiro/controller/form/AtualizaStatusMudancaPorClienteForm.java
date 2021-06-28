@@ -1,8 +1,12 @@
 package br.com.mudanceiro.controller.form;
 
+import javax.validation.constraints.NotEmpty;
+
 import br.com.mudanceiro.model.StatusMudanca;
 
 public class AtualizaStatusMudancaPorClienteForm {
+	
+	@NotEmpty(message = "{campo.statusMudanca.obrigatorio}")
 	private StatusMudanca statusMudanca;
 
 	public StatusMudanca getStatusMudanca() {

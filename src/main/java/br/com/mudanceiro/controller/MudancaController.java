@@ -44,14 +44,14 @@ public class MudancaController {
 		return InformacoesMudancaDTO.converte(mudanca);					
 	}
 	
-	//arrumar
+	//refazer depois
 	@PutMapping("/orcamento/{idMudanca}")
 	public void InformarOrcamento(@PathVariable Long idMudanca, @RequestBody AtualizaOrcamentoMudancaPorMudanceiroForm form) {
 		mudancaService.atualizaOrcamento(idMudanca, form);
 	}
 	
-	//arrumar
-	@PutMapping("/status/{idMudanca}") //pra caso o cliente queira cancelar
+	
+	@PutMapping("/status/{idMudanca}") //pra caso o cliente queira cancelar ou aceitar orçamento.
 	public void AtualizarStatus(@PathVariable Long idMudanca, @RequestBody AtualizaStatusMudancaPorClienteForm form) {
 		mudancaService.atualizaStatusMudanca(idMudanca, form);
 	}

@@ -16,18 +16,25 @@ import br.com.mudanceiro.repository.MudancaRepository;
 
 public class MudancaForm {
 	
+	@NotEmpty(message = "{campo.idUsuario.obrigatorio}")
 	private Long usuario;
 	
+	@NotEmpty(message = "{campo.cepOrigem.obrigatorio}")
 	private int cepOrigen;
 
+	@NotEmpty(message = "{campo.cepDestino.obrigatorio}")
 	private int cepDestino;
 	
-	private LocalDateTime dataMudanca;
+	@NotEmpty(message = "{campo.dataMudanca.obrigatorio}")
+	private String dataMudanca;
 	
+	@NotEmpty(message = "{campo.imovelOrigem.obrigatorio}")
 	private TipoImovel imovelOrigem;
 	
+	@NotEmpty(message = "{campo.imovelDestino.obrigatorio}")
 	private TipoImovel imovelDestino;
 	
+	@NotEmpty(message = "{campo.mobilia.obrigatorio}")
 	private String mobilia;
 	private byte[] mobiliaImagem;
 	
@@ -51,10 +58,10 @@ public class MudancaForm {
 	public void setCepDestino(int cepDestino) {
 		this.cepDestino = cepDestino;
 	}
-	public LocalDateTime getDataMudanca() {
+	public String getDataMudanca() {
 		return dataMudanca;
 	}
-	public void setDataMudanca(LocalDateTime dataMudanca) {
+	public void setDataMudanca(String dataMudanca) {
 		this.dataMudanca = dataMudanca;
 	}
 	public TipoImovel getImovelOrigem() {

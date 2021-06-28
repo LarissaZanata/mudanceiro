@@ -2,6 +2,8 @@ package br.com.mudanceiro.service.impl;
 
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +20,7 @@ import br.com.mudanceiro.service.MudancaService;
 import br.com.mudanceiro.controller.form.AtualizaOrcamentoMudancaPorMudanceiroForm;
 import br.com.mudanceiro.controller.form.AtualizaStatusMudancaPorClienteForm;
 import br.com.mudanceiro.controller.form.MudancaForm;
+import br.com.mudanceiro.exception.MudancaNaoEncontradaException;
 import br.com.mudanceiro.exception.RegraNegocioException;
 import br.com.mudanceiro.model.Mudanca;
 import br.com.mudanceiro.model.Mudanceiro;
@@ -26,6 +29,8 @@ import br.com.mudanceiro.model.Usuario;
 
 @Service
 public class MudancaServiceImpl implements MudancaService{
+	
+	private static final String FORMATO_DATA = "dd/MM/uuuu";
 	
 	private MudancaRepository mudancaRepository;
 	private UsuarioRepository usuarioRepository;
@@ -42,6 +47,9 @@ public class MudancaServiceImpl implements MudancaService{
 	@Override
 	@Transactional
 	public Mudanca salvar(MudancaForm form) {
+		DateTimeFormatter parser = DateTimeFormatter.ofPattern(FORMATO_DATA);
+		
+		
 		Long idUsuario = form.getUsuario();
 		Usuario cliente = usuarioRepository.findById(idUsuario)
 		.orElseThrow(() -> new RegraNegocioException("Código de cliente inválido."));
@@ -50,7 +58,7 @@ public class MudancaServiceImpl implements MudancaService{
 		mudanca.setCepOrigen(form.getCepOrigen());
 		mudanca.setCepDestino(form.getCepDestino());
 		mudanca.setCliente(cliente);
-		mudanca.setDataMudanca(form.getDataMudanca());
+		mudanca.setDataMudanca(LocalDate.parse(form.getDataMudanca(), parser).atStartOfDay());
 		mudanca.setImovelOrigem(form.getImovelOrigem());
 		mudanca.setImovelDestino(form.getImovelDestino());
 		mudanca.setMobilia(form.getMobilia());
@@ -64,33 +72,16 @@ public class MudancaServiceImpl implements MudancaService{
 	@Override
 	public Mudanca obterMudancaCompleta(Long id) {	
 		return mudancaRepository.findById(id)
-				.orElseThrow(() -> new RegraNegocioException("Código de mudanca inválido."));
+				.orElseThrow(() -> new MudancaNaoEncontradaException());
 	}
 
 	@Override
 	@Transactional
 	public void atualizaOrcamento(Long id, AtualizaOrcamentoMudancaPorMudanceiroForm form) {	
-		Mudanca mudanca = new Mudanca();
-		mudanca.setValorOrcamento(form.getValorOrcamento());
-
-		mudancaRepository.findById(id)
-							.map(mudancaExistente -> {
-								mudanca.setMudanceiro(populaMudanceiro(mudancaExistente.getCliente()));			
-								mudanca.setId(mudancaExistente.getId());
-								mudancaRepository.save(mudanca);
-								return mudancaExistente;	
-							}).orElseThrow(() -> 
-							new ResponseStatusException(HttpStatus.NOT_FOUND, "Mudanca não encontrada para o id " + id));
-		
+				
 	}
 	
-	private Mudanceiro populaMudanceiro(Usuario usuarioMudanca) {
-		return mudanceiroRepository.findByUsuario(usuarioMudanca)
-							.map(mudanceiroExistente -> {
-								return mudanceiroExistente;
-							}).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, 
-					"Mudanceiro não encontrado para usuario com o id " + usuarioMudanca.getId()));
-	}
+
 	
 	@Override
 	@Transactional
@@ -101,10 +92,21 @@ public class MudancaServiceImpl implements MudancaService{
 		mudancaRepository.findById(id)
 						.map(mudancaExistente -> {
 							mudanca.setId(mudancaExistente.getId());
+							mudanca.setCepDestino(mudancaExistente.getCepDestino());
+							mudanca.setCepOrigen(mudancaExistente.getCepOrigen());
+							mudanca.setCliente(mudancaExistente.getCliente());
+							mudanca.setDataCriacao(mudanca.getDataCriacao());
+							mudanca.setDataMudanca(mudancaExistente.getDataMudanca());
+							mudanca.setImovelDestino(mudancaExistente.getImovelDestino());
+							mudanca.setImovelOrigem(mudancaExistente.getImovelOrigem());
+							mudanca.setMobilia(mudancaExistente.getMobilia());
+							mudanca.setMobiliaImagem(mudancaExistente.getMobiliaImagem());
+							mudanca.setMudanceiro(mudancaExistente.getMudanceiro());
+							mudanca.setStatusMudanca(mudancaExistente.getStatusMudanca());
+							mudanca.setValorOrcamento(mudancaExistente.getValorOrcamento());
 							mudancaRepository.save(mudanca);
 							return mudancaExistente;
-						}).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, 
-								"Mudanca não encontada para o id " + id));
+						}).orElseThrow(() -> new MudancaNaoEncontradaException());
 	}
 
 	@Override
