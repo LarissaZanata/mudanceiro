@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.mudanceiro.controller.dto.MudanceiroDTO;
 import br.com.mudanceiro.controller.form.MudanceiroForm;
+import br.com.mudanceiro.controller.form.UpdateUsuarioMudanceiroForm;
+import br.com.mudanceiro.controller.form.UsuarioMudanceiroForm;
 import br.com.mudanceiro.service.MudanceiroService;
 import br.com.mudanceiro.model.Mudanceiro;
 
@@ -31,14 +33,14 @@ public class MudanceiroController {
 	}
 	
 	@GetMapping("{id}")
-	public MudanceiroDTO getUsuarioById(@PathVariable Long id) {
+	public MudanceiroDTO getMudanceiroById(@PathVariable Long id) {
 		Mudanceiro mudanceiro = mudanceiroService.getMudanceiroById(id);
 		
 		return MudanceiroDTO.converte(mudanceiro);
 	}
 	
 	@GetMapping
-	public List<MudanceiroDTO> getAllUsuarioById() {
+	public List<MudanceiroDTO> getAllMudanceiros() {
 		List<Mudanceiro> mudanceiros = mudanceiroService.getAllMudanceiro();
 		
 		return MudanceiroDTO.convertAll(mudanceiros);
@@ -46,7 +48,7 @@ public class MudanceiroController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public MudanceiroDTO save(@RequestBody @Valid  MudanceiroForm mudanceiroForm) {
+	public MudanceiroDTO save(@RequestBody @Valid  UsuarioMudanceiroForm mudanceiroForm) {
 		Mudanceiro MudanceiroSalvo = mudanceiroService.save(mudanceiroForm);
 		return MudanceiroDTO.converte(MudanceiroSalvo);
 	}
@@ -59,8 +61,7 @@ public class MudanceiroController {
 	
 	@PutMapping("{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void update(@PathVariable Long id, @RequestBody MudanceiroForm mudanceiro) {
-		
+	public void update(@PathVariable Long id, @RequestBody UpdateUsuarioMudanceiroForm mudanceiro) {
 		mudanceiroService.update(id, mudanceiro);
 	}
 	

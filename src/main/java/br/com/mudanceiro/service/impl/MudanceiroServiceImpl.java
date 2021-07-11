@@ -3,17 +3,15 @@ package br.com.mudanceiro.service.impl;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import br.com.mudanceiro.repository.MudanceiroRepository;
 import br.com.mudanceiro.repository.UsuarioRepository;
 import br.com.mudanceiro.service.MudanceiroService;
-import br.com.mudanceiro.controller.form.MudanceiroForm;
+import br.com.mudanceiro.controller.form.UpdateUsuarioMudanceiroForm;
+import br.com.mudanceiro.controller.form.UsuarioMudanceiroForm;
 import br.com.mudanceiro.exception.MudanceiroNaoEncontradoException;
-import br.com.mudanceiro.exception.UsuarioNaoEncontradoException;
 import br.com.mudanceiro.model.Mudanceiro;
 import br.com.mudanceiro.model.Usuario;
 
@@ -38,55 +36,58 @@ public class MudanceiroServiceImpl implements MudanceiroService{
 	
 	@Override
 	@Transactional
-	public Mudanceiro save(MudanceiroForm form) {
-		Usuario usuario = usuarioRepository
-											.findById(form.getIdUsuario())
-											.orElseThrow(() -> new UsuarioNaoEncontradoException(form.getIdUsuario()));
+	public Mudanceiro save(UsuarioMudanceiroForm form) {
+		
+		Usuario usuario = new Usuario();
+		usuario.setNome(form.getNome());
+		usuario.setEmail(form.getEmail());
+		usuario.setSenha(form.getSenha());
+		usuario.setTelefone(form.getTelefone());
+		
+		usuarioRepository.save(usuario);
+		
 		Mudanceiro mudanceiro = new Mudanceiro();
 		mudanceiro.setTipoServico(form.getTipoServico());
 		mudanceiro.setUsuario(usuario);
 		
 		return mudanceiroRepository.save(mudanceiro);
+		
 	}
-	
 	
 	@Override
 	@Transactional
 	public void delete(Long id) { 
-		Optional<Mudanceiro> usuario =  mudanceiroRepository.findById(id);
-		if(usuario.isPresent()) {
-			try {
-				mudanceiroRepository.delete(usuario.get());
-			} catch (Exception e) {
-				throw new MudanceiroNaoEncontradoException();	
-			}
-			
-		}	
+		Optional<Mudanceiro> mudanceiro =  mudanceiroRepository.findById(id);
+		if(mudanceiro.isPresent()) {
+			mudanceiroRepository.delete(mudanceiro.get());
+		}
 	}
 	
+	@Override
 	@Transactional
-	public void update(Long id, MudanceiroForm mudanceiroForm) {
-		
-		Optional<Usuario> usuario  = usuarioRepository.findById(mudanceiroForm.getIdUsuario());
+	public void update(Long id, UpdateUsuarioMudanceiroForm mudanceiroForm) {
 		
 		Mudanceiro mudanceiro = new Mudanceiro();
 		mudanceiro.setTipoServico(mudanceiroForm.getTipoServico());
+		Usuario usuario = new Usuario();
+		usuario.setEmail(mudanceiroForm.getEmail());
+		usuario.setNome(mudanceiroForm.getNome());
+		usuario.setTelefone(mudanceiroForm.getTelefone());
 		
-		if(usuario.isPresent()){
-			mudanceiro.setUsuario(usuario.get());
-		} else {
-			throw new UsuarioNaoEncontradoException(mudanceiroForm.getIdUsuario());
-		}
 		
 		mudanceiroRepository
 						.findById(id)
 						.map(mudanceiroExistente -> {
 							mudanceiro.setId(mudanceiroExistente.getId());
+							usuario.setId(mudanceiroExistente.getUsuario().getId());
+							usuario.setSenha(mudanceiroExistente.getUsuario().getSenha());
+							mudanceiro.setUsuario(usuario);
 							mudanceiroRepository.save(mudanceiro);
 							return mudanceiroExistente;
 						}).orElseThrow(() -> new MudanceiroNaoEncontradoException(id));
 	}
 	
+	@Override
 	public List<Mudanceiro> getAllMudanceiro(){
 		
 		List<Mudanceiro> mudanceiros = mudanceiroRepository.findAll();

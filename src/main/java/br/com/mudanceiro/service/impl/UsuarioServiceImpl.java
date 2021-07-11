@@ -46,12 +46,6 @@ public class UsuarioServiceImpl implements UsuarioService{
 			
 		}
 		
-		
-	//erro na ide
-	//	usuarioRepository.findById(id)
-	//					 .map( usuario -> usuarioRepository.delete(usuario))
-	//					 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado."));	
-		
 	}
 
 	@Override
