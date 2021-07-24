@@ -1,6 +1,9 @@
 package br.com.mudanceiro.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,6 +27,11 @@ public class Usuario {
 	
 	@NotEmpty(message = "{campo.telefone.obrigatorio}")
 	private String telefone;
+	
+	private boolean mudanceiro = false;
+	
+	@Enumerated(EnumType.STRING)
+	private TipoServico tipoServico = TipoServico.MUDANCEIRO;
 	
 	@Override
 	public int hashCode() {
@@ -89,5 +97,21 @@ public class Usuario {
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
+	}
+
+	public boolean isMudanceiro() {
+		return mudanceiro;
+	}
+
+	public void setMudanceiro(boolean mudanceiro) {
+		this.mudanceiro = mudanceiro;
+	}
+
+	public TipoServico getTipoServico() {
+		return tipoServico;
+	}
+
+	public void setTipoServico(TipoServico tipoServico) {
+		this.tipoServico = tipoServico;
 	}
 }

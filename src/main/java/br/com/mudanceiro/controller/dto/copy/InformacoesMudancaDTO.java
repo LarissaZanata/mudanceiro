@@ -131,7 +131,7 @@ public class InformacoesMudancaDTO {
 		this.statusMudanca = statusMudanca;
 	}
 
-	public static InformacoesMudancaDTO converte(Mudanca mudanca) {
+/*	public static InformacoesMudancaDTO converte(Mudanca mudanca) {
 		UsuarioDTO clienteDTO = UsuarioDTO.converte(mudanca.getCliente());
 		MudanceiroDTO mudanceiroDTO = new MudanceiroDTO();
 
@@ -155,7 +155,7 @@ public class InformacoesMudancaDTO {
 		mudancaDTO.setStatusMudanca(mudanca.getStatusMudanca());
 		
 		return mudancaDTO;
-	}
+	}*/
 	
 	
 }

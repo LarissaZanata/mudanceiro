@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import org.hibernate.transform.ToListResultTransformer;
 import org.springframework.util.CollectionUtils;
 
-import br.com.mudanceiro.model.Mudanceiro;
 import br.com.mudanceiro.model.TipoServico;
 
 public class MudanceiroDTO {
@@ -52,15 +51,15 @@ public class MudanceiroDTO {
 		this.usuario = usuario;
 	}
 
-	public static MudanceiroDTO converte(Mudanceiro mudanceiro) {
+/*	public static MudanceiroDTO converte(Mudanceiro mudanceiro) {
 		UsuarioDTO usuarioMudanceiro = UsuarioDTO.converte(mudanceiro.getUsuario());
 		MudanceiroDTO mudanceiroDTO = new MudanceiroDTO(mudanceiro.getId(),
 														mudanceiro.getTipoServico(), 
 														usuarioMudanceiro);
 		return mudanceiroDTO;
-	}
+	}*/
 	
-	public static List<MudanceiroDTO> convertAll(List<Mudanceiro> mudanceiros){
+/*	public static List<MudanceiroDTO> convertAll(List<Mudanceiro> mudanceiros){
 		if(CollectionUtils.isEmpty(mudanceiros)) {
 			return Collections.emptyList();
 		}
@@ -69,5 +68,5 @@ public class MudanceiroDTO {
 														.map(m -> MudanceiroDTO.converte(m))
 														.collect(Collectors.toList());
 		return allMudanceiros;
-	}
+	}*/
 }

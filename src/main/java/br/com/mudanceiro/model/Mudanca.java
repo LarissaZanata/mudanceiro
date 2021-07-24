@@ -24,7 +24,7 @@ public class Mudanca {
 	private Usuario cliente;
 	
 	@ManyToOne  //um mudanceiro pode ter varias mudanças
-	private Mudanceiro mudanceiro;
+	private Usuario mudanceiro;
 	private LocalDateTime dataCriacao = LocalDateTime.now();
 	private LocalDateTime dataMudanca;
 	
@@ -112,11 +112,11 @@ public class Mudanca {
 		this.cliente = cliente;
 	}
 
-	public Mudanceiro getMudanceiro() {
+	public Usuario getMudanceiro() {
 		return mudanceiro;
 	}
 
-	public void setMudanceiro(Mudanceiro mudanceiro) {
+	public void setMudanceiro(Usuario mudanceiro) {
 		this.mudanceiro = mudanceiro;
 	}
 

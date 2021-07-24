@@ -12,7 +12,8 @@ public interface MudancaService {
 
 	Mudanca salvar(MudancaForm form);
 	Mudanca obterMudancaCompleta(Long id);
-	void atualizaOrcamento(Long id, AtualizaOrcamentoMudancaPorMudanceiroForm form); 
+	void atualizaOrcamento(Long id, Long idMudanceiro, AtualizaOrcamentoMudancaPorMudanceiroForm form); 
 	void atualizaStatusMudanca(Long id, AtualizaStatusMudancaPorClienteForm form);
 	List<Mudanca> buscaMudancasPendentes();
+	List<Mudanca> buscaMudancasPorIdMudanceiro(Long idMudanceiro);
 }

@@ -32,35 +32,39 @@ public class MudancaController {
 	}
 	
 	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseStatus(HttpStatus.CREATED) //ok testado
 	public Long save(@RequestBody MudancaForm form) {
 		Mudanca mudanca = mudancaService.salvar(form);
 		return mudanca.getId();
 	}
 	
-	@GetMapping("{idMudanca}")
+	@GetMapping("{idMudanca}") //ok testado
 	public InformacoesMudancaDTO getMudanca(@PathVariable Long idMudanca) {
 		Mudanca mudanca = mudancaService.obterMudancaCompleta(idMudanca);
 		return InformacoesMudancaDTO.converte(mudanca);					
 	}
 	
-	//refazer depois
-	@PutMapping("/orcamento/{idMudanca}")
-	public void InformarOrcamento(@PathVariable Long idMudanca, @RequestBody AtualizaOrcamentoMudancaPorMudanceiroForm form) {
-		mudancaService.atualizaOrcamento(idMudanca, form);
+	@PutMapping("/orcamento/{idMudanca}/{idMudanceiro}") //ok testado
+	public void InformarOrcamento(@PathVariable Long idMudanca, @PathVariable Long idMudanceiro,  
+			@RequestBody AtualizaOrcamentoMudancaPorMudanceiroForm form) {
+		mudancaService.atualizaOrcamento(idMudanca, idMudanceiro, form);
 	}
 	
 	
-	@PutMapping("/status/{idMudanca}") //pra caso o cliente queira cancelar ou aceitar orçamento.
+	@PutMapping("/status/{idMudanca}") //para o cliente cancelar ou aceitar orçamento. //ok TESTADO
 	public void AtualizarStatus(@PathVariable Long idMudanca, @RequestBody AtualizaStatusMudancaPorClienteForm form) {
 		mudancaService.atualizaStatusMudanca(idMudanca, form);
 	}
 	
 	@GetMapping("/pendentes")
-	public List<MudancaDTO> listaMudancasPendentes(){
+	public List<MudancaDTO> listaMudancasPendentes(){ //ok testado
 		List<Mudanca> mudancasPendentes = mudancaService.buscaMudancasPendentes();
 		return MudancaDTO.convertAll(mudancasPendentes);
 	}
 	
-	//construir um pra buscar mudancas por ids de mudanceiros
+	@GetMapping("mudancasMudanceiro/{idMudanceiro}") //ok testado
+	public List<MudancaDTO> listaMudancasPorIdMudanceiro(@PathVariable Long idMudanceiro){
+		List<Mudanca> mudancas = mudancaService.buscaMudancasPorIdMudanceiro(idMudanceiro);
+		return MudancaDTO.convertAll(mudancas);
+	}
 }

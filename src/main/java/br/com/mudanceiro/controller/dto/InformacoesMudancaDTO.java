@@ -10,7 +10,7 @@ public class InformacoesMudancaDTO {
 
 	private Long id;
 	private UsuarioDTO cliente;
-	private MudanceiroDTO mudanceiro;
+	private UsuarioDTO mudanceiro;
 	private int cepOrigem;
 	private int cepDestino;
 	private TipoImovel imovelOrigem;
@@ -24,7 +24,7 @@ public class InformacoesMudancaDTO {
 		
 	}
 	
-	public InformacoesMudancaDTO(Long id, UsuarioDTO cliente, MudanceiroDTO mudanceiro, int cepOrigem,
+	public InformacoesMudancaDTO(Long id, UsuarioDTO cliente, UsuarioDTO mudanceiro, int cepOrigem,
 			int cepDestino, TipoImovel imovelOrigem, TipoImovel imovelDestino, String mobilia,
 			BigDecimal valorOrcamento, byte[] mobiliaImagem, StatusMudanca statusMudanca) {
 		super();
@@ -57,11 +57,11 @@ public class InformacoesMudancaDTO {
 		this.cliente = cliente;
 	}
 
-	public MudanceiroDTO getMudanceiro() {
+	public UsuarioDTO getMudanceiro() {
 		return mudanceiro;
 	}
 
-	public void setMudanceiro(MudanceiroDTO mudanceiro) {
+	public void setMudanceiro(UsuarioDTO mudanceiro) {
 		this.mudanceiro = mudanceiro;
 	}
 
@@ -133,7 +133,7 @@ public class InformacoesMudancaDTO {
 
 	public static InformacoesMudancaDTO converte(Mudanca mudanca) {
 		UsuarioDTO clienteDTO = UsuarioDTO.converte(mudanca.getCliente());
-		MudanceiroDTO mudanceiroDTO = new MudanceiroDTO();
+		
 
 		
 		InformacoesMudancaDTO mudancaDTO = new InformacoesMudancaDTO();
@@ -141,7 +141,8 @@ public class InformacoesMudancaDTO {
 		mudancaDTO.setCliente(clienteDTO);
 		
 		if(mudanca.getMudanceiro() != null) {
-			mudanceiroDTO = MudanceiroDTO.converte(mudanca.getMudanceiro());
+			//mudanceiroDTO = MudanceiroDTO.converte(mudanca.getMudanceiro());
+			UsuarioDTO mudanceiroDTO = UsuarioDTO.converte(mudanca.getMudanceiro());
 			mudancaDTO.setMudanceiro(mudanceiroDTO);
 		}
 		

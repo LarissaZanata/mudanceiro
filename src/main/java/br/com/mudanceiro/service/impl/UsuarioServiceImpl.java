@@ -35,7 +35,7 @@ public class UsuarioServiceImpl implements UsuarioService{
 	}
 
 	@Override
-	public void delete(Long id) { //erro da ide
+	public void delete(Long id) {
 		Optional<Usuario> usuario =  usuarioRepository.findById(id);
 		if(usuario.isPresent()) {
 			try {

@@ -9,7 +9,6 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.com.mudanceiro.model.Mudanca;
-import br.com.mudanceiro.model.Mudanceiro;
 import br.com.mudanceiro.model.StatusMudanca;
 import br.com.mudanceiro.model.TipoImovel;
 import br.com.mudanceiro.repository.MudancaRepository;
