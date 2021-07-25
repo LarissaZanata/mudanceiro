@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 
 import br.com.mudanceiro.model.TipoServico;
 
-public class UsuarioMudanceiroForm {
+public class UsuarioForm {
 	
 	@NotEmpty(message = "{campo.nome.obrigatorio}")
 	private String nome;
@@ -19,11 +19,7 @@ public class UsuarioMudanceiroForm {
 	@NotEmpty(message = "{campo.telefone.obrigatorio}")
 	private String telefone;
 	
-	private boolean mudanceiro = true;
-
-	@NotNull(message = "{campo.tipoServico.obrigatorio}")
-	private TipoServico tipoServico;
-	
+	private boolean mudanceiro = false;
 
 	public String getNome() {
 		return nome;
@@ -50,12 +46,6 @@ public class UsuarioMudanceiroForm {
 		this.telefone = telefone;
 	}
 	
-	public TipoServico getTipoServico() {
-		return tipoServico;
-	}
-	public void setTipoServico(TipoServico tipoServico) {
-		this.tipoServico = tipoServico;
-	}
 	public boolean isMudanceiro() {
 		return mudanceiro;
 	}

@@ -1,5 +1,11 @@
 package br.com.mudanceiro.controller.dto;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.util.CollectionUtils;
+
 import br.com.mudanceiro.model.Usuario;
 
 public class UsuarioDTO {
@@ -47,5 +53,18 @@ public class UsuarioDTO {
 	public static UsuarioDTO converte(Usuario usuario) {
 		UsuarioDTO usuarioDto = new UsuarioDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getTelefone());
 		return usuarioDto;
+	}
+	
+	public static List<UsuarioDTO> convertAll(List<Usuario> usuarios){
+		
+		
+		if(CollectionUtils.isEmpty(usuarios)) {
+			return Collections.emptyList();
+		}
+		
+		List<UsuarioDTO> allUsuarios = usuarios.stream()
+													.map(m -> UsuarioDTO.converte(m))
+													.collect(Collectors.toList());
+		return allUsuarios;
 	}
 }

@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 
+import br.com.mudanceiro.controller.form.UsuarioForm;
+import br.com.mudanceiro.controller.form.UsuarioMudanceiroForm;
+
 @Entity
 public class Usuario {
 	
@@ -28,10 +31,10 @@ public class Usuario {
 	@NotEmpty(message = "{campo.telefone.obrigatorio}")
 	private String telefone;
 	
-	private boolean mudanceiro = false;
+	private boolean mudanceiro;
 	
 	@Enumerated(EnumType.STRING)
-	private TipoServico tipoServico = TipoServico.MUDANCEIRO;
+	private TipoServico tipoServico;
 	
 	@Override
 	public int hashCode() {
@@ -113,5 +116,26 @@ public class Usuario {
 
 	public void setTipoServico(TipoServico tipoServico) {
 		this.tipoServico = tipoServico;
+	}
+	
+	public static Usuario converte(UsuarioForm usuarioForm) {
+		Usuario usuario = new Usuario();
+		usuario.setNome(usuarioForm.getNome());
+		usuario.setEmail(usuarioForm.getEmail());
+		usuario.setMudanceiro(false);
+		usuario.setSenha(usuarioForm.getSenha());
+		usuario.setTelefone(usuarioForm.getTelefone());
+		return usuario;
+	}
+	
+	public static Usuario converteMudanceiro(UsuarioMudanceiroForm usuarioForm) {
+		Usuario usuario = new Usuario();
+		usuario.setNome(usuarioForm.getNome());
+		usuario.setEmail(usuarioForm.getEmail());
+		usuario.setMudanceiro(true);
+		usuario.setSenha(usuarioForm.getSenha());
+		usuario.setTelefone(usuarioForm.getTelefone());
+		usuario.setTipoServico(usuarioForm.getTipoServico());
+		return usuario;
 	}
 }

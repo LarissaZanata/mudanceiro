@@ -20,7 +20,7 @@ public class Mudanca {
 	private int cepOrigen;
 	private int cepDestino;
 	
-	@ManyToOne  //um cliente pode ter varia mudanças
+	@ManyToOne  //um cliente pode ter varias mudanças
 	private Usuario cliente;
 	
 	@ManyToOne  //um mudanceiro pode ter varias mudanças

@@ -141,7 +141,6 @@ public class InformacoesMudancaDTO {
 		mudancaDTO.setCliente(clienteDTO);
 		
 		if(mudanca.getMudanceiro() != null) {
-			//mudanceiroDTO = MudanceiroDTO.converte(mudanca.getMudanceiro());
 			UsuarioDTO mudanceiroDTO = UsuarioDTO.converte(mudanca.getMudanceiro());
 			mudancaDTO.setMudanceiro(mudanceiroDTO);
 		}

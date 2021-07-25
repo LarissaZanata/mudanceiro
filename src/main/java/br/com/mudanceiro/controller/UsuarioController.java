@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.mudanceiro.controller.dto.UsuarioDTO;
+import br.com.mudanceiro.controller.dto.UsuarioMudanceiroDTO;
+import br.com.mudanceiro.controller.form.UsuarioForm;
+import br.com.mudanceiro.controller.form.UsuarioMudanceiroForm;
 import br.com.mudanceiro.model.Usuario;
 import br.com.mudanceiro.service.UsuarioService;
 
@@ -37,11 +40,18 @@ public class UsuarioController {
 		return UsuarioDTO.converte(usuario);
 	}
 	
-	@PostMapping
+	@PostMapping("save/usuario")
 	@ResponseStatus(HttpStatus.CREATED)
-	public UsuarioDTO save(@RequestBody @Valid Usuario usuario) {
-		Usuario usuarioSalvo = usuarioService.save(usuario);
+	public UsuarioDTO save(@RequestBody @Valid UsuarioForm usuarioForm) {
+		Usuario usuarioSalvo = usuarioService.save(Usuario.converte(usuarioForm));
 		return UsuarioDTO.converte(usuarioSalvo);
+	}
+	
+	@PostMapping("save/mudanceiro")
+	@ResponseStatus(HttpStatus.CREATED)
+	public UsuarioMudanceiroDTO saveUsuarioMudanceiro(@RequestBody @Valid UsuarioMudanceiroForm usuarioForm) {	
+		Usuario usuarioSalvo = usuarioService.save(Usuario.converteMudanceiro(usuarioForm));
+		return UsuarioMudanceiroDTO.converte(usuarioSalvo);
 	}
 	
 	@DeleteMapping("{id}")
@@ -50,14 +60,23 @@ public class UsuarioController {
 		usuarioService.delete(id);
 	}
 	
-	@PutMapping("{id}")
+	@PutMapping("update/usuario/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void update(@PathVariable Long id, @RequestBody Usuario usuario) {
-		usuarioService.update(id, usuario);
+	public void update(@PathVariable Long id, @RequestBody UsuarioForm usuarioForm) {
+		
+		usuarioService.update(id, Usuario.converte(usuarioForm));
+	}
+	
+	@PutMapping("update/mudanceiro/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void updateMudanceiro(@PathVariable Long id, @RequestBody UsuarioMudanceiroForm usuarioForm) {
+		
+		usuarioService.update(id, Usuario.converteMudanceiro(usuarioForm));
 	}
 	
 	@GetMapping
-	public List<Usuario> find(Usuario filtro){
-		return usuarioService.find(filtro); //fazer retornar um DTO
+	public List<UsuarioDTO> find(Usuario filtro){
+		List<Usuario> usuarios = usuarioService.find(filtro);	
+		return UsuarioDTO.convertAll(usuarios);
 	}
 }
