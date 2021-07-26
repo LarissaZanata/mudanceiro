@@ -1,7 +1,9 @@
 package br.com.mudanceiro.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,10 +11,14 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;;
+import javax.persistence.ManyToOne;
+
+import br.com.mudanceiro.controller.form.MudancaForm;;
 
 @Entity
 public class Mudanca {
+	
+	private static final String FORMATO_DATA = "dd/MM/uuuu";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,6 +59,7 @@ public class Mudanca {
 		this.imovelDestino = imovelDestino;
 		this.mobilia = mobilia;
 		this.mobiliaImagem = mobiliaImagem;
+		this.statusMudanca = StatusMudanca.PENDENTE;
 	}
 	
 	@Override
@@ -182,5 +189,18 @@ public class Mudanca {
 
 	public void setValorOrcamento(BigDecimal valorOrcamento) {
 		this.valorOrcamento = valorOrcamento;
+	}
+	
+	public static Mudanca converte(MudancaForm form) {
+		Mudanca mudanca = new Mudanca(form.getCepOrigen(), form.getCepDestino(), StringToDate(form.getDataMudanca()), form.getImovelOrigem(),
+				form.getImovelDestino(), form.getMobilia(), form.getMobiliaImagem());
+		
+		return mudanca;
+	}
+	
+	private static LocalDateTime StringToDate(String data) {
+		DateTimeFormatter parser = DateTimeFormatter.ofPattern(FORMATO_DATA);
+		LocalDateTime dateTime = LocalDate.parse(data, parser).atStartOfDay();
+		return dateTime;
 	}
 }

@@ -10,7 +10,7 @@ import br.com.mudanceiro.model.Mudanca;
 
 public interface MudancaService {
 
-	Mudanca salvar(MudancaForm form);
+	Mudanca salvar(Long idUsuario, Mudanca mudanca);
 	Mudanca obterMudancaCompleta(Long id);
 	void atualizaOrcamento(Long id, Long idMudanceiro, AtualizaOrcamentoMudancaPorMudanceiroForm form); 
 	void atualizaStatusMudanca(Long id, AtualizaStatusMudancaPorClienteForm form);

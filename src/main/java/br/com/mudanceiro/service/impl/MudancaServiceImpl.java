@@ -21,6 +21,7 @@ import br.com.mudanceiro.controller.form.AtualizaOrcamentoMudancaPorMudanceiroFo
 import br.com.mudanceiro.controller.form.AtualizaStatusMudancaPorClienteForm;
 import br.com.mudanceiro.controller.form.MudancaForm;
 import br.com.mudanceiro.exception.MudancaNaoEncontradaException;
+import br.com.mudanceiro.exception.MudanceiroNaoEncontradoException;
 import br.com.mudanceiro.exception.RegraNegocioException;
 import br.com.mudanceiro.model.Mudanca;
 import br.com.mudanceiro.model.StatusMudanca;
@@ -29,7 +30,7 @@ import br.com.mudanceiro.model.Usuario;
 @Service
 public class MudancaServiceImpl implements MudancaService{
 	
-	private static final String FORMATO_DATA = "dd/MM/uuuu";
+	
 	
 	private MudancaRepository mudancaRepository;
 	private UsuarioRepository usuarioRepository;
@@ -42,25 +43,12 @@ public class MudancaServiceImpl implements MudancaService{
 
 	@Override
 	@Transactional
-	public Mudanca salvar(MudancaForm form) {
-		DateTimeFormatter parser = DateTimeFormatter.ofPattern(FORMATO_DATA);
-		
-		
-		Long idUsuario = form.getUsuario();
+	public Mudanca salvar(Long idUsuario, Mudanca mudanca) {
+
 		Usuario cliente = usuarioRepository.findById(idUsuario)
 		.orElseThrow(() -> new RegraNegocioException("Código de cliente inválido."));
 		
-		Mudanca mudanca = new Mudanca();
-		mudanca.setCepOrigen(form.getCepOrigen());
-		mudanca.setCepDestino(form.getCepDestino());
 		mudanca.setCliente(cliente);
-		mudanca.setDataMudanca(LocalDate.parse(form.getDataMudanca(), parser).atStartOfDay());
-		mudanca.setImovelOrigem(form.getImovelOrigem());
-		mudanca.setImovelDestino(form.getImovelDestino());
-		mudanca.setMobilia(form.getMobilia());
-		mudanca.setMobiliaImagem(form.getMobiliaImagem());
-		mudanca.setStatusMudanca(StatusMudanca.PENDENTE);
-		mudanca.setValorOrcamento(BigDecimal.valueOf(0));
 		
 		return mudancaRepository.save(mudanca);
 	}
@@ -74,31 +62,19 @@ public class MudancaServiceImpl implements MudancaService{
 	@Override
 	@Transactional
 	public void atualizaOrcamento(Long id, Long idMudanceiro, AtualizaOrcamentoMudancaPorMudanceiroForm form) {	
-		Mudanca mudanca = new Mudanca();
-		mudanca.setValorOrcamento(form.getValorOrcamento());
 		
 		Optional<Usuario> mudanceiro = usuarioRepository.findById(idMudanceiro);
-		
+
 		if(mudanceiro.isPresent()) {
-			
 			mudancaRepository.findById(id)
-								.map(mudancaExistente -> {
-									mudanca.setId(mudancaExistente.getId()); //verificar outra maneira de atualizar sem precisar setar td de novo
-									mudanca.setMudanceiro(mudanceiro.get());
-									
-									mudanca.setCepDestino(mudancaExistente.getCepDestino());
-									mudanca.setCepOrigen(mudancaExistente.getCepOrigen());
-									mudanca.setCliente(mudancaExistente.getCliente());
-									mudanca.setDataCriacao(mudanca.getDataCriacao());
-									mudanca.setDataMudanca(mudancaExistente.getDataMudanca());
-									mudanca.setImovelDestino(mudancaExistente.getImovelDestino());
-									mudanca.setImovelOrigem(mudancaExistente.getImovelOrigem());
-									mudanca.setMobilia(mudancaExistente.getMobilia());
-									mudanca.setMobiliaImagem(mudancaExistente.getMobiliaImagem());
-									mudanca.setStatusMudanca(mudancaExistente.getStatusMudanca());
-									mudancaRepository.save(mudanca);
-									return mudancaExistente;
-								}).orElseThrow(() -> new MudancaNaoEncontradaException());
+					.map(mudancaExistente -> {
+						mudancaExistente.setValorOrcamento(form.getValorOrcamento());
+						mudancaExistente.setMudanceiro(mudanceiro.get());
+						mudancaRepository.save(mudancaExistente);
+						return mudancaExistente;
+					}).orElseThrow(() -> new MudancaNaoEncontradaException());
+		} else {
+			throw new MudanceiroNaoEncontradoException(idMudanceiro);
 		}
 	}
 	
@@ -107,24 +83,10 @@ public class MudancaServiceImpl implements MudancaService{
 	@Override
 	@Transactional
 	public void atualizaStatusMudanca(Long id, AtualizaStatusMudancaPorClienteForm form) {
-		Mudanca mudanca = new Mudanca();
-		mudanca.setStatusMudanca(form.getStatusMudanca());
-		
 		mudancaRepository.findById(id)
 						.map(mudancaExistente -> {
-							mudanca.setId(mudancaExistente.getId());
-							mudanca.setCepDestino(mudancaExistente.getCepDestino());
-							mudanca.setCepOrigen(mudancaExistente.getCepOrigen());
-							mudanca.setCliente(mudancaExistente.getCliente());
-							mudanca.setDataCriacao(mudanca.getDataCriacao());
-							mudanca.setDataMudanca(mudancaExistente.getDataMudanca());
-							mudanca.setImovelDestino(mudancaExistente.getImovelDestino());
-							mudanca.setImovelOrigem(mudancaExistente.getImovelOrigem());
-							mudanca.setMobilia(mudancaExistente.getMobilia());
-							mudanca.setMobiliaImagem(mudancaExistente.getMobiliaImagem());
-							mudanca.setMudanceiro(mudancaExistente.getMudanceiro());
-							mudanca.setValorOrcamento(mudancaExistente.getValorOrcamento());
-							mudancaRepository.save(mudanca);
+							mudancaExistente.setStatusMudanca(form.getStatusMudanca());
+							mudancaRepository.save(mudancaExistente);
 							return mudancaExistente;
 						}).orElseThrow(() -> new MudancaNaoEncontradaException());
 	}

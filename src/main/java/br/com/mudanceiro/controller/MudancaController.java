@@ -31,10 +31,11 @@ public class MudancaController {
 		this.mudancaService = mudancaService;
 	}
 	
-	@PostMapping
+	@PostMapping("save/{idUsuario}")
 	@ResponseStatus(HttpStatus.CREATED) //ok testado
-	public Long save(@RequestBody MudancaForm form) {
-		Mudanca mudanca = mudancaService.salvar(form);
+	public Long save(@PathVariable Long idUsuario, @RequestBody MudancaForm form) {
+		Mudanca mudanca = mudancaService.salvar(idUsuario, Mudanca.converte(form));
+		
 		return mudanca.getId();
 	}
 	
