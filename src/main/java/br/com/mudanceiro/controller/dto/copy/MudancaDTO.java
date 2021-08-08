@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.util.CollectionUtils;
 
 import br.com.mudanceiro.model.Mudanca;
+import br.com.mudanceiro.model.MudancaImagens;
 import br.com.mudanceiro.model.StatusMudanca;
 import br.com.mudanceiro.model.TipoImovel;
 
@@ -21,14 +22,14 @@ public class MudancaDTO {
 	private TipoImovel imovelDestino;
 	private String mobilia;
 	private StatusMudanca statusMudanca;
-	private byte[] mobiliaImagem;
+	private List<MudancaImagens> mobiliaImagem;
 	
 	public MudancaDTO() {
 		
 	}
 	
 	public MudancaDTO(DadosUsuarioParaMudanceiroDTO cliente, int cepOrigem, int cepDestino, TipoImovel imovelOrigem,
-			TipoImovel imovelDestino, String mobilia, StatusMudanca statusMudanca, byte[] mobiliaImagem) {
+			TipoImovel imovelDestino, String mobilia, StatusMudanca statusMudanca, List<MudancaImagens> mobiliaImagem) {
 		super();
 		this.cliente = cliente;
 		this.cepOrigem = cepOrigem;
@@ -96,11 +97,11 @@ public class MudancaDTO {
 		this.statusMudanca = statusMudanca;
 	}
 
-	public byte[] getMobiliaImagem() {
+	public List<MudancaImagens> getMobiliaImagem() {
 		return mobiliaImagem;
 	}
 
-	public void setMobiliaImagem(byte[] mobiliaImagem) {
+	public void setMobiliaImagem(List<MudancaImagens> mobiliaImagem) {
 		this.mobiliaImagem = mobiliaImagem;
 	}
 	
@@ -114,7 +115,7 @@ public class MudancaDTO {
 		mudancaDTO.setImovelDestino(mudanca.getImovelDestino());
 		mudancaDTO.setMobilia(mudanca.getMobilia());
 		mudancaDTO.setStatusMudanca(mudanca.getStatusMudanca());
-		mudancaDTO.setMobiliaImagem(mudanca.getMobiliaImagem());
+		mudancaDTO.setMobiliaImagem(mudanca.getMobiliaImagens());
 		return mudancaDTO;
 		
 	}

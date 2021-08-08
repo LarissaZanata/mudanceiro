@@ -1,17 +1,23 @@
 package br.com.mudanceiro.model;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
 
 import br.com.mudanceiro.controller.form.MudancaForm;;
 
@@ -39,27 +45,35 @@ public class Mudanca {
 	
 	@Enumerated(EnumType.STRING)
 	private TipoImovel imovelDestino = TipoImovel.CASA;
+	
 	private String mobilia;
 	
 	@Enumerated(EnumType.STRING)
 	private StatusMudanca statusMudanca;
 	
-	private BigDecimal valorOrcamento;
-	private byte[] mobiliaImagem;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "id_mudanca")
+	List<OrcamentoMudanca> valoresOrcamento;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "id_mudanca")
+	List<MudancaImagens> mobiliaImagens;
+	
+	//private byte[] mobiliaImagem;
 	
 	public Mudanca() {
 	}
 	
 	public Mudanca(int cepOrigen, int cepDestino, LocalDateTime dataMudanca, TipoImovel imovelOrigem,
-			TipoImovel imovelDestino, String mobilia, byte[] mobiliaImagem) {
+			TipoImovel imovelDestino, String mobilia, List<MudancaImagens> imagens) {
 		this.cepOrigen = cepOrigen;
 		this.cepDestino = cepDestino;
 		this.dataMudanca = dataMudanca;
 		this.imovelOrigem = imovelOrigem;
 		this.imovelDestino = imovelDestino;
 		this.mobilia = mobilia;
-		this.mobiliaImagem = mobiliaImagem;
 		this.statusMudanca = StatusMudanca.PENDENTE;
+		this.mobiliaImagens = imagens;
 	}
 	
 	@Override
@@ -171,31 +185,47 @@ public class Mudanca {
 		this.statusMudanca = statusMudanca;
 	}
 
-	public byte[] getMobiliaImagem() {
-		return mobiliaImagem;
-	}
-
-	public void setMobiliaImagem(byte[] mobiliaImagem) {
-		this.mobiliaImagem = mobiliaImagem;
-	}
-
 	public TipoImovel getImovelDestino() {
 		return imovelDestino;
 	}
-
-	public BigDecimal getValorOrcamento() {
-		return valorOrcamento;
+	
+	public List<OrcamentoMudanca> getValoresOrcamento() {
+		return valoresOrcamento;
 	}
 
-	public void setValorOrcamento(BigDecimal valorOrcamento) {
-		this.valorOrcamento = valorOrcamento;
+	public void setValoresOrcamento(List<OrcamentoMudanca> valoresOrcamento) {
+		this.valoresOrcamento = valoresOrcamento;
+	}
+
+	public List<MudancaImagens> getMobiliaImagens() {
+		return mobiliaImagens;
+	}
+
+	public void setMobiliaImagens(List<MudancaImagens> mobiliaImagens) {
+		this.mobiliaImagens = mobiliaImagens;
 	}
 	
 	public static Mudanca converte(MudancaForm form) {
+		List<MudancaImagens> imagens = convertImagens(form.getMobiliaImagem());
+		
 		Mudanca mudanca = new Mudanca(form.getCepOrigen(), form.getCepDestino(), StringToDate(form.getDataMudanca()), form.getImovelOrigem(),
-				form.getImovelDestino(), form.getMobilia(), form.getMobiliaImagem());
+				form.getImovelDestino(), form.getMobilia(), imagens);
 		
 		return mudanca;
+	}
+	
+	private static List<MudancaImagens> convertImagens(List<byte[]> imagens) {
+		List<MudancaImagens> mudancasImagens = new ArrayList<MudancaImagens>();
+		
+		if(!imagens.isEmpty() || !imagens.equals(null)) {
+			for (byte[] bs : imagens) {
+				MudancaImagens mudancaImagem = new MudancaImagens();
+				mudancaImagem.setImagem(bs);
+				mudancasImagens.add(mudancaImagem);
+			}
+		}
+		
+		return mudancasImagens;
 	}
 	
 	private static LocalDateTime StringToDate(String data) {
@@ -203,4 +233,5 @@ public class Mudanca {
 		LocalDateTime dateTime = LocalDate.parse(data, parser).atStartOfDay();
 		return dateTime;
 	}
+
 }

@@ -1,6 +1,5 @@
 package br.com.mudanceiro.controller;
 
-
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -32,38 +31,40 @@ public class MudancaController {
 	}
 	
 	@PostMapping("save/{idUsuario}")
-	@ResponseStatus(HttpStatus.CREATED) //ok testado
-	public Long save(@PathVariable Long idUsuario, @RequestBody MudancaForm form) {
+	@ResponseStatus(HttpStatus.CREATED) 
+	//public Long save(@PathVariable Long idUsuario, String dto, @RequestParam("file") List<MultipartFile> file) {
+	public Long save(@PathVariable Long idUsuario, MudancaForm  form) {	
+
 		Mudanca mudanca = mudancaService.salvar(idUsuario, Mudanca.converte(form));
 		
 		return mudanca.getId();
 	}
 	
-	@GetMapping("{idMudanca}") //ok testado
+	@GetMapping("{idMudanca}") 
 	public InformacoesMudancaDTO getMudanca(@PathVariable Long idMudanca) {
 		Mudanca mudanca = mudancaService.obterMudancaCompleta(idMudanca);
 		return InformacoesMudancaDTO.converte(mudanca);					
 	}
 	
-	@PutMapping("/orcamento/{idMudanca}/{idMudanceiro}") //ok testado
+	@PutMapping("/orcamento/{idMudanca}/{idMudanceiro}") 
 	public void InformarOrcamento(@PathVariable Long idMudanca, @PathVariable Long idMudanceiro,  
 			@RequestBody AtualizaOrcamentoMudancaPorMudanceiroForm form) {
 		mudancaService.atualizaOrcamento(idMudanca, idMudanceiro, form);
 	}
 	
 	
-	@PutMapping("/status/{idMudanca}") //para o cliente cancelar ou aceitar orçamento. //ok TESTADO
+	@PutMapping("/status/{idMudanca}")
 	public void AtualizarStatus(@PathVariable Long idMudanca, @RequestBody AtualizaStatusMudancaPorClienteForm form) {
 		mudancaService.atualizaStatusMudanca(idMudanca, form);
 	}
 	
 	@GetMapping("/pendentes")
-	public List<MudancaDTO> listaMudancasPendentes(){ //ok testado
+	public List<MudancaDTO> listaMudancasPendentes(){ 
 		List<Mudanca> mudancasPendentes = mudancaService.buscaMudancasPendentes();
 		return MudancaDTO.convertAll(mudancasPendentes);
 	}
 	
-	@GetMapping("mudancasMudanceiro/{idMudanceiro}") //ok testado
+	@GetMapping("mudancasMudanceiro/{idMudanceiro}")
 	public List<MudancaDTO> listaMudancasPorIdMudanceiro(@PathVariable Long idMudanceiro){
 		List<Mudanca> mudancas = mudancaService.buscaMudancasPorIdMudanceiro(idMudanceiro);
 		return MudancaDTO.convertAll(mudancas);

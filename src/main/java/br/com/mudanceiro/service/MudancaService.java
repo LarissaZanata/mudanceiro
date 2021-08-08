@@ -3,6 +3,8 @@ package br.com.mudanceiro.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import br.com.mudanceiro.controller.form.AtualizaOrcamentoMudancaPorMudanceiroForm;
 import br.com.mudanceiro.controller.form.AtualizaStatusMudancaPorClienteForm;
 import br.com.mudanceiro.controller.form.MudancaForm;
@@ -16,4 +18,5 @@ public interface MudancaService {
 	void atualizaStatusMudanca(Long id, AtualizaStatusMudancaPorClienteForm form);
 	List<Mudanca> buscaMudancasPendentes();
 	List<Mudanca> buscaMudancasPorIdMudanceiro(Long idMudanceiro);
+	Mudanca salvar(String dto, List<MultipartFile> file);
 }

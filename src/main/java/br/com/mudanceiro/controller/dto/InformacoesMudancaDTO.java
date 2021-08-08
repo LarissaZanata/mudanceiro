@@ -1,8 +1,11 @@
 package br.com.mudanceiro.controller.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import br.com.mudanceiro.model.Mudanca;
+import br.com.mudanceiro.model.MudancaImagens;
+import br.com.mudanceiro.model.OrcamentoMudanca;
 import br.com.mudanceiro.model.TipoImovel;
 import br.com.mudanceiro.model.StatusMudanca;
 
@@ -16,9 +19,9 @@ public class InformacoesMudancaDTO {
 	private TipoImovel imovelOrigem;
 	private TipoImovel imovelDestino;
 	private String mobilia;
-	private BigDecimal valorOrcamento;
+	private List<OrcamentoMudanca> valorOrcamento;
 	private StatusMudanca statusMudanca;
-	private byte[] mobiliaImagem;
+	private List<MudancaImagens> mobiliaImagem;
 	
 	public InformacoesMudancaDTO() {
 		
@@ -26,7 +29,7 @@ public class InformacoesMudancaDTO {
 	
 	public InformacoesMudancaDTO(Long id, UsuarioDTO cliente, UsuarioDTO mudanceiro, int cepOrigem,
 			int cepDestino, TipoImovel imovelOrigem, TipoImovel imovelDestino, String mobilia,
-			BigDecimal valorOrcamento, byte[] mobiliaImagem, StatusMudanca statusMudanca) {
+			List<OrcamentoMudanca> valorOrcamento, List<MudancaImagens> mobiliaImagem, StatusMudanca statusMudanca) {
 		super();
 		this.id = id;
 		this.cliente = cliente;
@@ -105,19 +108,19 @@ public class InformacoesMudancaDTO {
 		this.mobilia = mobilia;
 	}
 
-	public BigDecimal getValorOrcamento() {
+	public List<OrcamentoMudanca> getValorOrcamento() {
 		return valorOrcamento;
 	}
 
-	public void setValorOrcamento(BigDecimal valorOrcamento) {
+	public void setValorOrcamento(List<OrcamentoMudanca> valorOrcamento) {
 		this.valorOrcamento = valorOrcamento;
 	}
 
-	public byte[] getMobiliaImagem() {
+	public List<MudancaImagens> getMobiliaImagem() {
 		return mobiliaImagem;
 	}
 
-	public void setMobiliaImagem(byte[] mobiliaImagem) {
+	public void setMobiliaImagem(List<MudancaImagens> mobiliaImagem) {
 		this.mobiliaImagem = mobiliaImagem;
 	}
 
@@ -150,8 +153,8 @@ public class InformacoesMudancaDTO {
 		mudancaDTO.setImovelOrigem(mudanca.getImovelOrigem());
 		mudancaDTO.setImovelDestino(mudanca.getImovelDestino());
 		mudancaDTO.setMobilia(mudanca.getMobilia());
-		mudancaDTO.setValorOrcamento(mudanca.getValorOrcamento());
-		mudancaDTO.setMobiliaImagem(mudanca.getMobiliaImagem());
+		mudancaDTO.setValorOrcamento(mudanca.getValoresOrcamento());
+		mudancaDTO.setMobiliaImagem(mudanca.getMobiliaImagens());
 		mudancaDTO.setStatusMudanca(mudanca.getStatusMudanca());
 		
 		return mudancaDTO;

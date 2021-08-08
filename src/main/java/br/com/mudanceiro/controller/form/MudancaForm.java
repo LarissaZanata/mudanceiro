@@ -1,6 +1,7 @@
 package br.com.mudanceiro.controller.form;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -35,7 +36,8 @@ public class MudancaForm {
 	
 	@NotEmpty(message = "{campo.mobilia.obrigatorio}")
 	private String mobilia;
-	private byte[] mobiliaImagem;
+	
+	private List<byte[]> mobiliaImagem;
 	
 	
 	
@@ -81,10 +83,10 @@ public class MudancaForm {
 	public void setMobilia(String mobilia) {
 		this.mobilia = mobilia;
 	}
-	public byte[] getMobiliaImagem() {
+	public List<byte[]> getMobiliaImagem() {
 		return mobiliaImagem;
 	}
-	public void setMobiliaImagem(byte[] mobiliaImagem) {
+	public void setMobiliaImagem(List<byte[]> mobiliaImagem) {
 		this.mobiliaImagem = mobiliaImagem;
 	}
 
