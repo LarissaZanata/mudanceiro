@@ -15,7 +15,7 @@ public interface MudancaService {
 	Mudanca salvar(Long idUsuario, Mudanca mudanca);
 	Mudanca obterMudancaCompleta(Long id);
 	void atualizaOrcamento(Long id, Long idMudanceiro, AtualizaOrcamentoMudancaPorMudanceiroForm form); 
-	void atualizaStatusMudanca(Long id, AtualizaStatusMudancaPorClienteForm form);
+	void atualizaStatusMudanca(Long id, Long idOrcamento, AtualizaStatusMudancaPorClienteForm form);
 	List<Mudanca> buscaMudancasPendentes();
 	List<Mudanca> buscaMudancasPorIdMudanceiro(Long idMudanceiro);
 	Mudanca salvar(String dto, List<MultipartFile> file);

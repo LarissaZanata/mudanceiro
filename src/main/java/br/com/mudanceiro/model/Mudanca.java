@@ -17,7 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
+import javax.persistence.OneToOne;
 
 import br.com.mudanceiro.controller.form.MudancaForm;;
 
@@ -53,11 +53,14 @@ public class Mudanca {
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_mudanca")
-	List<OrcamentoMudanca> valoresOrcamento;
+	private List<OrcamentoMudanca> valoresOrcamento;
+	
+	@OneToOne
+	private OrcamentoMudanca orcamentoEscolhido;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_mudanca")
-	List<MudancaImagens> mobiliaImagens;
+	private List<MudancaImagens> mobiliaImagens;
 	
 	//private byte[] mobiliaImagem;
 	
@@ -203,8 +206,16 @@ public class Mudanca {
 
 	public void setMobiliaImagens(List<MudancaImagens> mobiliaImagens) {
 		this.mobiliaImagens = mobiliaImagens;
-	}
+	}	
 	
+	public OrcamentoMudanca getOrcamentoEscolhido() {
+		return orcamentoEscolhido;
+	}
+
+	public void setOrcamentoEscolhido(OrcamentoMudanca orcamentoEscolhido) {
+		this.orcamentoEscolhido = orcamentoEscolhido;
+	}
+
 	public static Mudanca converte(MudancaForm form) {
 		List<MudancaImagens> imagens = convertImagens(form.getMobiliaImagem());
 		

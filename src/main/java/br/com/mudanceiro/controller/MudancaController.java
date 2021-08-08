@@ -53,9 +53,9 @@ public class MudancaController {
 	}
 	
 	
-	@PutMapping("/status/{idMudanca}")
-	public void AtualizarStatus(@PathVariable Long idMudanca, @RequestBody AtualizaStatusMudancaPorClienteForm form) {
-		mudancaService.atualizaStatusMudanca(idMudanca, form);
+	@PutMapping("/status/{idMudanca}/{idOrcamento}")
+	public void AtualizarStatus(@PathVariable Long idMudanca, @PathVariable Long idOrcamento, @RequestBody AtualizaStatusMudancaPorClienteForm form) {
+		mudancaService.atualizaStatusMudanca(idMudanca, idOrcamento, form);
 	}
 	
 	@GetMapping("/pendentes")

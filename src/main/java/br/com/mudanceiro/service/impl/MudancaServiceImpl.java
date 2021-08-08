@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
 import br.com.mudanceiro.repository.MudancaRepository;
+import br.com.mudanceiro.repository.OrcamentoMudancaRepository;
 import br.com.mudanceiro.repository.UsuarioRepository;
 import br.com.mudanceiro.service.MudancaImagensService;
 import br.com.mudanceiro.service.MudancaService;
@@ -47,14 +48,17 @@ public class MudancaServiceImpl implements MudancaService{
 	
 	private MudancaRepository mudancaRepository;
 	private UsuarioRepository usuarioRepository;
+	private OrcamentoMudancaRepository orcamentoMudancaRepository;
 	
 	@Autowired
 	private MudancaImagensService mudancaImagensService;
 	
 	public MudancaServiceImpl(MudancaRepository mudancaRepository, 
-							  UsuarioRepository usuarioRepository) {
+							  UsuarioRepository usuarioRepository,
+							  OrcamentoMudancaRepository orcamentoMudancaRepository) {
 		this.mudancaRepository = mudancaRepository;
 		this.usuarioRepository = usuarioRepository;
+		this.orcamentoMudancaRepository = orcamentoMudancaRepository;
 	}
 
 	@Override
@@ -104,10 +108,21 @@ public class MudancaServiceImpl implements MudancaService{
 	
 	@Override
 	@Transactional
-	public void atualizaStatusMudanca(Long id, AtualizaStatusMudancaPorClienteForm form) {
+	public void atualizaStatusMudanca(Long id, Long idOrcamento, AtualizaStatusMudancaPorClienteForm form) {
+		
+		Optional<OrcamentoMudanca> orcamentoEscolhido = orcamentoMudancaRepository.findById(idOrcamento);
+		
 		
 		mudancaRepository.findById(id)
 						.map(mudancaExistente -> {
+							
+							if(form.getStatusMudanca().equals(StatusMudanca.ABERTA)) {
+								if(orcamentoEscolhido.isPresent()) {
+									mudancaExistente.setOrcamentoEscolhido(orcamentoEscolhido.get());
+								} else {
+									throw new RegraNegocioException("Orcamento com id: " + idOrcamento + " não encontrado.");
+								}
+							}
 							mudancaExistente.setStatusMudanca(form.getStatusMudanca());
 							mudancaRepository.save(mudancaExistente);
 							return mudancaExistente;
